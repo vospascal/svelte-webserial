@@ -1,10 +1,9 @@
 <script>
-    import {getContext, onDestroy} from 'svelte';
+    import {getContext} from 'svelte';
 
     let message = getContext('WSC-message');
-    let connected = getContext('WSC-connected');
 
-    $: list = [];
+    let list = [];
 
     const handleMessages = async () => {
         if (list.length >= 10) {

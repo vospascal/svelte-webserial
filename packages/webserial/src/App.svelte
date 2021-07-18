@@ -4,6 +4,7 @@
     import Logger from "./Logger/Logger.svelte";
     import Buttons from "./Buttons/Buttons.svelte";
     import Maps from "./Maps/Maps.svelte";
+    import Timeline from "./Timeline/Timeline.svelte";
 </script>
 
 <WebSerialContext >
@@ -11,4 +12,5 @@
     <Test>boxed content</Test>
     <Logger/>
     <Maps/>
+    <Timeline/>
 </WebSerialContext>
