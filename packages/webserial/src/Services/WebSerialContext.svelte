@@ -14,21 +14,13 @@
 
     const serialrxjs = new WebSerialRxjs();
 
-    const init = () => {
-        serialrxjs.writeHandler("GetMap");
-        serialrxjs.writeHandler("GetCali");
-        serialrxjs.writeHandler("GetInverted");
-        serialrxjs.writeHandler("GetSmooth");
-        serialrxjs.writeHandler("GetBits");
-        console.log('init')
-    }
-
     let connected = writable(false);
     let pedalMap = writable({});
     let calibrationMap = writable({});
     let invertedMap = writable({});
     let smoothMap = writable({});
     let bitsMap = writable({});
+    let message = writable("");
 
     let getStream = null;
 
@@ -37,54 +29,51 @@
         return !!cleanString.match(regex);
     }
 
-
-    onMount(async () => {
-        console.log('context mounted')
-    });
-
     afterUpdate(async () => {
-        // let once = [2, 1, 0];
         if ($connected) {
-            init();
+
+            serialrxjs.writeHandler("GetMap");
+            serialrxjs.writeHandler("GetCali");
+            serialrxjs.writeHandler("GetInverted");
+            serialrxjs.writeHandler("GetSmooth");
+            serialrxjs.writeHandler("GetBits");
+
             getStream = await serialrxjs.stream()
             getStream
-                // .pipe(once.length > 0 ? delay(300) : delay(0))
+                // .pipe(sample(300))
                 .pipe(map(value => cleanString(value)))
                 .subscribe({
-                    next: (message) => {
-                        console.log('123')
+                    next: (msg) => {
                         //dont match normal input
-                        if (!findMatch(message)) {
-                            console.log(message)
-                            const pedal_map = pedalMapFilter(message)
+                        if (!findMatch(msg)) {
+                            console.log(msg)
+                            const pedal_map = pedalMapFilter(msg)
                             if (pedal_map) {
                                 pedalMap.set(pedal_map);
                             }
 
-                            const cali_map = pedalCalibrationFilter(message);
+                            const cali_map = pedalCalibrationFilter(msg);
                             if (cali_map) {
                                 calibrationMap.set(cali_map);
                             }
 
-                            const inver_map = pedalInvertedFilter(message);
+                            const inver_map = pedalInvertedFilter(msg);
                             if (inver_map) {
                                 invertedMap.set(inver_map);
                             }
 
-                            const smooth_map = pedalSmoothFilter(message);
+                            const smooth_map = pedalSmoothFilter(msg);
                             if (smooth_map) {
                                 smoothMap.set(smooth_map);
                             }
 
-                            const bits_map = pedalBitsFilter(message);
+                            const bits_map = pedalBitsFilter(msg);
                             if (bits_map) {
                                 bitsMap.set(bits_map);
                             }
+                        } else {
+                            message.set(msg);
                         }
-                        // if (once.length > 0) {
-                        //     once.shift(0, -1)
-                        //     init();
-                        // }
 
                     },
                     complete: () => {
@@ -95,13 +84,8 @@
         }
         if (!$connected && getStream) {
             getStream.unsubscribe();
-            // once = [2, 1, 0];
         }
     });
-
-    if ($connected) {
-        init();
-    }
 
     setContext("WSC-actions", {
         connect: async () => {
@@ -113,7 +97,7 @@
             await serialrxjs.disconnectHandler();
             connected.set(false);
         },
-        stream: async () => await serialrxjs.stream(),
+        // stream: async () => await serialrxjs.stream(),
         write: async (msg) => await serialrxjs.writeHandler(msg),
     });
 
@@ -123,6 +107,7 @@
     setContext("WSC-invertedMap", invertedMap);
     setContext("WSC-smoothMap", smoothMap);
     setContext("WSC-bitsMap", bitsMap);
+    setContext("WSC-message", message);
 
 
 </script>
