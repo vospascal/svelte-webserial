@@ -1,7 +1,6 @@
 <script>
     import {getContext, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
-    import timelineFilter from "./timelineFilter";
 
     let message = getContext('WSC-message');
 
@@ -102,11 +101,19 @@
 
     message.subscribe((value ) => setTimeout(() => {
         if (value) {
-            const result = timelineFilter(value)
             adddata({
-                throttle: result.throttle,
-                brake: result.brake,
-                clutch: result.clutch
+                throttle: {
+                    x: "",
+                    y: value.throttle.after,
+                },
+                brake: {
+                    x: "",
+                    y: value.brake.after,
+                },
+                clutch: {
+                    x: "",
+                    y: value.clutch.after,
+                }
             })
         }
     }, 0))

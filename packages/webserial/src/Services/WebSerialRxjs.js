@@ -110,19 +110,6 @@ class WebSerialRxjs {
             this.getReaderStream();
             this.getWriterStream();
         }
-
-        // this.monitor().subscribe({
-        //     next: (message) => {
-        //
-        //         const messageElement = document.createElement("p");
-        //         messageElement.textContent = message;
-        //         portLogsElement.appendChild(messageElement);
-        //     },
-        //     complete: () => {
-        //         console.log("[readLoop] DONE");
-        //     },
-        // });
-
     }
 
     stream = async () => {

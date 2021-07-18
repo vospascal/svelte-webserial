@@ -11,6 +11,7 @@
     import pedalSmoothFilter from "./Filters/pedalSmoothFilter";
     import cleanString from "./Filters/cleanString";
     import pedalMapFilter from "./Filters/pedalMapFilter";
+    import generalFilter from "./Filters/generalFilter";
 
     const serialrxjs = new WebSerialRxjs();
 
@@ -72,7 +73,7 @@
                                 bitsMap.set(bits_map);
                             }
                         } else {
-                            message.set(msg);
+                            message.set(generalFilter(msg));
                         }
 
                     },

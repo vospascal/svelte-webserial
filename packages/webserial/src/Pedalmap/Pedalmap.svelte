@@ -1,8 +1,6 @@
 <script>
     import {getContext, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
-    import pedalmapPositionFilter from "./pedalmapPositionFilter";
-    import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
@@ -100,7 +98,6 @@
             progress = brake.x;
         }
 
-
         if (type === "clutch") {
             chartInstance.data.datasets[0].data[0] = clutch
             progress = clutch.x;
@@ -110,19 +107,30 @@
     }
 
 
-    message.subscribe((value) => setTimeout(() => {
+    message.subscribe((value) => {
         if (value) {
-            const result = pedalmapPositionFilter(value)
             adddata({
-                throttle: result.throttle,
-                brake: result.brake,
-                clutch: result.clutch
+                throttle: {
+                    x: value.throttle.after || 0,
+                    y: value.throttle.before || 0,
+                    r: 3 //ticks size
+                },
+                brake: {
+                    x: value.brake.after || 0,
+                    y: value.brake.before || 0,
+                    r: 3 //ticks size
+                },
+                clutch: {
+                    x: value.clutch.after || 0,
+                    y: value.clutch.before || 0,
+                    r: 3 //ticks size
+                },
             })
         }
-    }, 0))
+    })
 
 
-    pedalMap.subscribe((value) => setTimeout(() => {
+    pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
             if (type === "throttle") {
                 const {throttleMap} = value
@@ -138,7 +146,7 @@
             }
             chartInstance.update();
         }
-    }, 0))
+    })
 
 
 </script>

@@ -12,9 +12,14 @@
     <Buttons/>
     <Test>boxed content</Test>
     <Logger/>
+    <Logger/>
+    <Logger/>
+    <Logger/>
+    <Logger/>
+    <Logger/>
     <Maps/>
-    <Pedalmap type="clutch"/>
-    <Pedalmap type="throttle"/>
-    <Pedalmap type="brake"/>
+<!--    <Pedalmap type="clutch"/>-->
+<!--    <Pedalmap type="throttle"/>-->
+<!--    <Pedalmap type="brake"/>-->
     <Timeline/>
 </WebSerialContext>
