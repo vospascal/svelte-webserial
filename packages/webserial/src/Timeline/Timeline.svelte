@@ -78,42 +78,38 @@
 
 
     function adddata({throttle, brake, clutch}) {
-        if (chartInstance.data.labels.length > 50) {
+        if (chartInstance.data.labels.length > 30) {
             chartInstance.data.labels.splice(0, 1);
         }
         chartInstance.data.labels.push("");
 
-        if (chartInstance.data.datasets[0].data.length > 50) {
+        if (chartInstance.data.datasets[0].data.length > 30) {
             chartInstance.data.datasets[0].data.splice(0, 1);
         }
         chartInstance.data.datasets[0].data.push(throttle);
 
-        if (chartInstance.data.datasets[1].data.length > 50) {
+        if (chartInstance.data.datasets[1].data.length > 30) {
             chartInstance.data.datasets[1].data.splice(0, 1);
         }
         chartInstance.data.datasets[1].data.push(brake);
 
-        if (chartInstance.data.datasets[2].data.length > 50) {
+        if (chartInstance.data.datasets[2].data.length > 30) {
             chartInstance.data.datasets[2].data.splice(0, 1);
         }
         chartInstance.data.datasets[2].data.push(clutch);
         chartInstance.update();
     }
 
-    const handleMessages = async () => {
-        if ($message) {
-            const result = timelineFilter($message)
+    message.subscribe((value ) => setTimeout(() => {
+        if (value) {
+            const result = timelineFilter(value)
             adddata({
                 throttle: result.throttle,
                 brake: result.brake,
                 clutch: result.clutch
             })
         }
-    }
-
-    $: {
-        $message, handleMessages()
-    }
+    }, 0))
 
 
 </script>

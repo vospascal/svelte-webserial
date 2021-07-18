@@ -89,27 +89,19 @@
         chartInstance = newChartInstance;
     })
 
-    function handleUpdateMap() {
-        if(JSON.stringify($pedalMap) !== '{}' ){
-            const {brakeMap} = $pedalMap
-            chartInstance.data.datasets[1].data = brakeMap
-            chartInstance.update();
-        }
-    }
-
     function adddata({throttle, brake, clutch}) {
-        if(type === "throttle"){
+        if (type === "throttle") {
             chartInstance.data.datasets[0].data[0] = throttle
             progress = throttle.x;
         }
 
-        if(type === "brake"){
+        if (type === "brake") {
             chartInstance.data.datasets[0].data[0] = brake
             progress = brake.x;
         }
 
 
-        if(type === "clutch"){
+        if (type === "clutch") {
             chartInstance.data.datasets[0].data[0] = clutch
             progress = clutch.x;
         }
@@ -118,33 +110,44 @@
     }
 
 
-    const handleMessages = async () => {
-        if ($message) {
-            const result = pedalmapPositionFilter($message)
+    message.subscribe((value) => setTimeout(() => {
+        if (value) {
+            const result = pedalmapPositionFilter(value)
             adddata({
                 throttle: result.throttle,
                 brake: result.brake,
                 clutch: result.clutch
             })
         }
-    }
+    }, 0))
 
-    $: {
-        $message, handleMessages()
-    }
 
-    $: {
-        $pedalMap, handleUpdateMap()
-    }
+    pedalMap.subscribe((value) => setTimeout(() => {
+        if (JSON.stringify(value) !== '{}') {
+            if (type === "throttle") {
+                const {throttleMap} = value
+                chartInstance.data.datasets[1].data = throttleMap
+            }
+            if (type === "brake") {
+                const {brakeMap} = value
+                chartInstance.data.datasets[1].data = brakeMap
+            }
+            if (type === "clutch") {
+                const {clutchMap} = value
+                chartInstance.data.datasets[1].data = clutchMap
+            }
+            chartInstance.update();
+        }
+    }, 0))
 
 
 </script>
 
-<div >
+<div>
     <div>
         <canvas height="300" width="300" bind:this={chartContainer}/>
     </div>
-<!--    <div>-->
-<!--        <VerticalProgress progress={progress} height="300"/>-->
-<!--    </div>-->
+    <!--    <div>-->
+    <!--        <VerticalProgress progress={progress} height="300"/>-->
+    <!--    </div>-->
 </div>

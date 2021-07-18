@@ -14,7 +14,7 @@
     <Logger/>
     <Maps/>
     <Pedalmap type="clutch"/>
-<!--    <Pedalmap type="throttle"/>-->
-<!--    <Pedalmap type="brake"/>-->
-<!--    <Timeline/>-->
+    <Pedalmap type="throttle"/>
+    <Pedalmap type="brake"/>
+    <Timeline/>
 </WebSerialContext>

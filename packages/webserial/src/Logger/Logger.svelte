@@ -21,6 +21,6 @@
 </script>
 <div>
     <pre>{JSON.stringify(list, null, 2)}</pre>
-    <hr>
-    <pre>{JSON.stringify($message, null, 2)}</pre>
+<!--    <hr>-->
+<!--    <pre>{JSON.stringify($message, null, 2)}</pre>-->
 </div>
