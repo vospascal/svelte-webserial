@@ -1,1 +1,1 @@
-# svelte-webserial
+# Svelte-webserial
