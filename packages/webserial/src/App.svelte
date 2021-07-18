@@ -5,6 +5,7 @@
     import Buttons from "./Buttons/Buttons.svelte";
     import Maps from "./Maps/Maps.svelte";
     import Timeline from "./Timeline/Timeline.svelte";
+    import Pedalmap from "./Pedalmap/Pedalmap.svelte";
 </script>
 
 <WebSerialContext >
@@ -12,5 +13,8 @@
     <Test>boxed content</Test>
     <Logger/>
     <Maps/>
-    <Timeline/>
+    <Pedalmap type="clutch"/>
+<!--    <Pedalmap type="throttle"/>-->
+<!--    <Pedalmap type="brake"/>-->
+<!--    <Timeline/>-->
 </WebSerialContext>

@@ -68,7 +68,7 @@
     };
 
     onMount(() => {
-        const newChartInstance = new Chart(chartContainer, {
+        const newChartInstance = new Chart(chartContainer.getContext('2d'), {
             type: 'line',
             data: chartData,
             options: chartOption
@@ -101,8 +101,8 @@
     }
 
     const handleMessages = async () => {
-        const result = timelineFilter($message)
-        if (result && $message) {
+        if ($message) {
+            const result = timelineFilter($message)
             adddata({
                 throttle: result.throttle,
                 brake: result.brake,
