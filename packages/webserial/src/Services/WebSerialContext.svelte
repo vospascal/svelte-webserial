@@ -3,7 +3,7 @@
     import { writable } from 'svelte/store';
 
     import WebSerialRxjs from "./WebSerialRxjs";
-    import {map} from "rxjs";
+    import {interval, map, Subject} from "rxjs";
 
     import pedalCalibrationFilter from "./Filters/pedalCalibrationFilter";
     import pedalInvertedFilter from "./Filters/pedalInvertedFilter";
@@ -12,6 +12,7 @@
     import cleanString from "./Filters/cleanString";
     import pedalMapFilter from "./Filters/pedalMapFilter";
     import generalFilter from "./Filters/generalFilter";
+    import {sample} from "rxjs/operators";
 
     const serialrxjs = new WebSerialRxjs();
 
@@ -30,9 +31,34 @@
         return !!cleanString.match(regex);
     }
 
+    function throttle(callback, wait, immediate = false) {
+        let timeout = null
+        let initialCall = true
+
+        return function() {
+            const callNow = immediate && initialCall
+            const next = () => {
+                callback.apply(this, arguments)
+                timeout = null
+            }
+
+            if (callNow) {
+                initialCall = false
+                next()
+            }
+
+            if (!timeout) {
+                timeout = setTimeout(next, wait)
+            }
+        }
+    }
+
+    let abc = new Subject();
+
+
+
     afterUpdate(async () => {
         if ($connected) {
-
             serialrxjs.writeHandler("GetMap");
             serialrxjs.writeHandler("GetCali");
             serialrxjs.writeHandler("GetInverted");
@@ -73,7 +99,8 @@
                                 bitsMap.set(bits_map);
                             }
                         } else {
-                            message.set(generalFilter(msg));
+                            abc.next(generalFilter(msg));
+                            // throttle(message.set(generalFilter(msg), 500));
                         }
 
                     },
@@ -108,7 +135,7 @@
     setContext("WSC-invertedMap", invertedMap);
     setContext("WSC-smoothMap", smoothMap);
     setContext("WSC-bitsMap", bitsMap);
-    setContext("WSC-message", message);
+    setContext("WSC-message", abc.pipe(sample(interval(50))));
 
 
 </script>

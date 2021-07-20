@@ -99,24 +99,28 @@
         chartInstance.update();
     }
 
-    message.subscribe((value ) => setTimeout(() => {
-        if (value) {
+
+    message.subscribe({
+        next: (msg) => {
             adddata({
                 throttle: {
                     x: "",
-                    y: value.throttle.after,
+                    y: msg.throttle.after,
                 },
                 brake: {
                     x: "",
-                    y: value.brake.after,
+                    y: msg.brake.after,
                 },
                 clutch: {
                     x: "",
-                    y: value.clutch.after,
+                    y: msg.clutch.after,
                 }
             })
-        }
-    }, 0))
+        },
+        complete: () => {
+            console.log("[readLoop] DONE");
+        },
+    });
 
 
 </script>

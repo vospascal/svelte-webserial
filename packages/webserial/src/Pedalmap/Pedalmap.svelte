@@ -107,27 +107,31 @@
     }
 
 
-    message.subscribe((value) => {
-        if (value) {
+    message.subscribe({
+        next: (msg) => {
             adddata({
                 throttle: {
-                    x: value.throttle.after || 0,
-                    y: value.throttle.before || 0,
+                    x: msg.throttle.after || 0,
+                    y: msg.throttle.before || 0,
                     r: 3 //ticks size
                 },
                 brake: {
-                    x: value.brake.after || 0,
-                    y: value.brake.before || 0,
+                    x: msg.brake.after || 0,
+                    y: msg.brake.before || 0,
                     r: 3 //ticks size
                 },
                 clutch: {
-                    x: value.clutch.after || 0,
-                    y: value.clutch.before || 0,
+                    x: msg.clutch.after || 0,
+                    y: msg.clutch.before || 0,
                     r: 3 //ticks size
                 },
             })
-        }
-    })
+        },
+        complete: () => {
+            console.log("[readLoop] DONE");
+        },
+    });
+
 
 
     pedalMap.subscribe((value) => {
