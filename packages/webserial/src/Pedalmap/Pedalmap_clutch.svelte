@@ -6,11 +6,15 @@
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
+    let invertedMap = getContext("WSC-invertedMap");
+    let smoothMap = getContext("WSC-smoothMap");
 
     let chartContainer = null; //ref
     let chartInstance = null;
     let progress = 0;
     let pedalMapNumbers = [0, 20, 40, 60, 80, 100]
+    let smooth = false;
+    let inverted = false;
 
     onMount(() => {
         const newChartInstance = new Chart(chartContainer.getContext('2d'), {
@@ -40,6 +44,18 @@
         },
     });
 
+    smoothMap.subscribe((value) => {
+        if (value) {
+            smooth = value.clutchSmooth === "1"
+        }
+    })
+
+    invertedMap.subscribe((value) => {
+        if (value) {
+            inverted = value.clutchInverted === "1"
+        }
+    })
+
     pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
             const {clutchMap} = value
@@ -51,68 +67,79 @@
     })
 
     const updateContext = (e) => {
-        if(chartInstance === null){
+        if (chartInstance === null) {
             return
         }
         pedalMapNumbers[e.target.name] = parseInt(e.target.value)
         pedalMap.update(existing => {
-            return {...existing, ...{ clutchMap: pedalMapNumbers} }
+            return {...existing, ...{clutchMap: pedalMapNumbers}}
         });
     }
 
     const checkIfMatchCurveList = (clutchMap) => {
         const curve = JSON.stringify(clutchMap)
-        if(curve === JSON.stringify(linearMap)){
+        if (curve === JSON.stringify(linearMap)) {
             return "linearMap";
         }
-        if(curve === JSON.stringify(slowCurveMap)){
+        if (curve === JSON.stringify(slowCurveMap)) {
             return "slowCurveMap";
         }
-        if(curve === JSON.stringify(verySlowCurveMap)){
+        if (curve === JSON.stringify(verySlowCurveMap)) {
             return "verySlowCurveMap";
         }
-        if(curve === JSON.stringify(fastCurveMap)){
+        if (curve === JSON.stringify(fastCurveMap)) {
             return "fastCurveMap";
         }
-        if(curve === JSON.stringify(veryFastCurveMap)){
+        if (curve === JSON.stringify(veryFastCurveMap)) {
             return "veryFastCurveMap";
         }
-        if(curve === JSON.stringify(sCurveFastSlowMap)){
+        if (curve === JSON.stringify(sCurveFastSlowMap)) {
             return "sCurveFastSlowMap";
         }
-        if(curve === JSON.stringify(sCurveSlowFastMap)){
+        if (curve === JSON.stringify(sCurveSlowFastMap)) {
             return "sCurveSlowFastMap";
         }
         return "";
+    }
+
+    const updateSmooth = (e) => {
+        smoothMap.update(existing => {
+            return {...existing, ...{clutchSmooth: e.target.checked ? "1" : "0"}}
+        });
+    }
+    const updateInverted = (e) => {
+        invertedMap.update(existing => {
+            return {...existing, ...{clutchInverted: e.target.checked ? "1" : "0"}}
+        });
     }
 
     const updateMapNumbers = (e) => {
         const selectedCurve = getMatchingCurve(e.target.value);
         console.log(selectedCurve)
         pedalMap.update(existing => {
-            return {...existing, ...{ clutchMap: selectedCurve} }
+            return {...existing, ...{clutchMap: selectedCurve}}
         });
     }
     const getMatchingCurve = (selectedValue) => {
-        if(selectedValue === "linearMap"){
+        if (selectedValue === "linearMap") {
             return linearMap;
         }
-        if(selectedValue === "slowCurveMap"){
+        if (selectedValue === "slowCurveMap") {
             return slowCurveMap;
         }
-        if(selectedValue === "verySlowCurveMap"){
+        if (selectedValue === "verySlowCurveMap") {
             return verySlowCurveMap;
         }
-        if(selectedValue === "fastCurveMap"){
+        if (selectedValue === "fastCurveMap") {
             return fastCurveMap;
         }
-        if(selectedValue === "veryFastCurveMap"){
+        if (selectedValue === "veryFastCurveMap") {
             return veryFastCurveMap;
         }
-        if(selectedValue === "sCurveFastSlowMap"){
+        if (selectedValue === "sCurveFastSlowMap") {
             return sCurveFastSlowMap;
         }
-        if(selectedValue === "sCurveSlowFastMap"){
+        if (selectedValue === "sCurveSlowFastMap") {
             return sCurveSlowFastMap;
         }
         return linearMap;
@@ -166,8 +193,8 @@
                 </select>
             </div>
             <div>
-                <label><input type="checkbox">smooth</label>
-                <label><input type="checkbox">inverted</label>
+                <label><input type="checkbox" on:input={(e) =>updateSmooth(e)} checked={smooth}>smooth</label>
+                <label><input type="checkbox" on:input={(e) =>updateInverted(e)} checked={inverted}>inverted</label>
             </div>
         </div>
         <canvas height="250" width="250" id="clutch" bind:this={chartContainer}/>
