@@ -157,9 +157,8 @@
 </script>
 
 <div>
-    <div style="display: inline-block">
-        clutch
-        <pre>{JSON.stringify(pedalMapNumbers)}</pre>
+    <div style="display: inline-block;  vertical-align: top;">
+        <div>clutch</div>
         <div style="display: inline-block">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
@@ -199,7 +198,7 @@
         </div>
         <canvas height="250" width="250" id="clutch" bind:this={chartContainer}/>
     </div>
-    <div style="display: inline-block">
-        <VerticalProgress progress={progress} height="250"/>
+    <div style="display: inline-block; vertical-align: top;">
+        <VerticalProgress progress={progress} height="470"/>
     </div>
 </div>

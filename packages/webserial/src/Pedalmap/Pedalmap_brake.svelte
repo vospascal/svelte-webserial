@@ -157,10 +157,9 @@
 </script>
 
 <div>
-    <div style="display: inline-block">
-        brake
-        <pre>{JSON.stringify(pedalMapNumbers)}</pre>
-        <div style="display: inline-block">
+    <div style="display: inline-block;  vertical-align: top;">
+        <div>brake</div>
+        <div style="display: inline-block;">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
                 <input type="number" on:input={(e) => updateContext(e)} name="0" value={pedalMapNumbers[0]}></div>
@@ -199,7 +198,7 @@
         </div>
         <canvas height="250" width="250" id="brake" bind:this={chartContainer}/>
     </div>
-    <div style="display: inline-block">
-        <VerticalProgress progress={progress} height="250"/>
+    <div style="display: inline-block; vertical-align: top;">
+        <VerticalProgress progress={progress} height="470"/>
     </div>
 </div>
