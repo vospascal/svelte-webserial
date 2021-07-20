@@ -13,7 +13,8 @@
         width: 20px;
         display: inline-block;
         margin-right: 10px;
-        height: calc(var(--height) - 30px);
+        margin-bottom: 30px;
+        height: calc(var(--height) - 40px);
     }
 
     .bar {

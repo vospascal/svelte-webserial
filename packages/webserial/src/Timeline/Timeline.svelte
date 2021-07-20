@@ -12,6 +12,13 @@
         animation: false,
         // responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    pointStyle: 'circle'
+                }
+            }
+        },
         elements: {
             point: {
                 radius: 0
