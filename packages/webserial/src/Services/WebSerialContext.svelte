@@ -22,7 +22,7 @@
     let invertedMap = writable({});
     let smoothMap = writable({});
     let bitsMap = writable({});
-    let message = writable("");
+    let message = new Subject();
 
     let getStream = null;
 
@@ -53,10 +53,6 @@
         }
     }
 
-    let abc = new Subject();
-
-
-
     afterUpdate(async () => {
         if ($connected) {
             serialrxjs.writeHandler("GetMap");
@@ -72,6 +68,10 @@
                 .subscribe({
                     next: (msg) => {
                         //dont match normal input
+                        if(findMatch(msg)){
+                            message.next(generalFilter(msg));
+                            return
+                        }
                         if (!findMatch(msg)) {
                             console.log(msg)
                             const pedal_map = pedalMapFilter(msg)
@@ -98,9 +98,6 @@
                             if (bits_map) {
                                 bitsMap.set(bits_map);
                             }
-                        } else {
-                            abc.next(generalFilter(msg));
-                            // throttle(message.set(generalFilter(msg), 500));
                         }
 
                     },
@@ -135,7 +132,7 @@
     setContext("WSC-invertedMap", invertedMap);
     setContext("WSC-smoothMap", smoothMap);
     setContext("WSC-bitsMap", bitsMap);
-    setContext("WSC-message", abc.pipe(sample(interval(50))));
+    setContext("WSC-message", message.pipe(sample(interval(30))));
 
 
 </script>
