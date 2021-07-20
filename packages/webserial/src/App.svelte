@@ -8,13 +8,20 @@
     import Pedalmap from "./Pedalmap/Pedalmap.svelte";
 </script>
 
-<WebSerialContext >
-    <Buttons/>
-    <Test>boxed content</Test>
-    <Logger/>
-    <Maps/>
-    <Pedalmap type="clutch"/>
-    <Pedalmap type="throttle"/>
-    <Pedalmap type="brake"/>
-    <Timeline/>
-</WebSerialContext>
+<div style="width: 860px; margin: 0 auto;">
+    <WebSerialContext >
+        <div style="padding: 0 10px;">
+            <Buttons/>
+            <Logger/>
+            <Maps/>
+        </div>
+        <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
+            <Pedalmap type="clutch"/>
+            <Pedalmap type="throttle"/>
+            <Pedalmap type="brake"/>
+        </div>
+        <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
+            <Timeline/>
+        </div>
+    </WebSerialContext>
+</div>

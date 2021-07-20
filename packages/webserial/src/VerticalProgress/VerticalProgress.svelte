@@ -10,7 +10,7 @@
         border-radius: 3px;
         box-shadow: none;
         position: relative;
-        width: 30px;
+        width: 20px;
         display: inline-block;
         margin-right: 10px;
         height: calc(var(--height) - 30px);

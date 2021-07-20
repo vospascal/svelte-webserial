@@ -157,9 +157,9 @@
 
 <div>
     <div style="display: inline-block">
-        <canvas height="300" width="300" bind:this={chartContainer}/>
+        <canvas height="250" width="250" bind:this={chartContainer}/>
     </div>
     <div style="display: inline-block">
-        <VerticalProgress progress={progress} height="300"/>
+        <VerticalProgress progress={progress} height="250"/>
     </div>
 </div>

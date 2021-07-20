@@ -10,7 +10,7 @@
     const chartOption = {
         showLines: true,
         animation: false,
-        responsive: true,
+        // responsive: true,
         maintainAspectRatio: false,
         elements: {
             point: {
@@ -125,6 +125,6 @@
 
 </script>
 
-<div>
-    <canvas height="200" bind:this={chartContainer}/>
+<div style="width: 850px">
+    <canvas height="150" bind:this={chartContainer}/>
 </div>
