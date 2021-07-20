@@ -83,7 +83,39 @@
         if(curve === JSON.stringify(sCurveSlowFastMap)){
             return "sCurveSlowFastMap";
         }
-        return "linearMap";
+        return "";
+    }
+
+    const updateMapNumbers = (e) => {
+        const selectedCurve = getMatchingCurve(e.target.value);
+        console.log(selectedCurve)
+        pedalMap.update(existing => {
+            return {...existing, ...{ clutchMap: selectedCurve} }
+        });
+    }
+    const getMatchingCurve = (selectedValue) => {
+        if(selectedValue === "linearMap"){
+            return linearMap;
+        }
+        if(selectedValue === "slowCurveMap"){
+            return slowCurveMap;
+        }
+        if(selectedValue === "verySlowCurveMap"){
+            return verySlowCurveMap;
+        }
+        if(selectedValue === "fastCurveMap"){
+            return fastCurveMap;
+        }
+        if(selectedValue === "veryFastCurveMap"){
+            return veryFastCurveMap;
+        }
+        if(selectedValue === "sCurveFastSlowMap"){
+            return sCurveFastSlowMap;
+        }
+        if(selectedValue === "sCurveSlowFastMap"){
+            return sCurveSlowFastMap;
+        }
+        return linearMap;
     }
 
     let curves = "linearMap";
@@ -122,8 +154,8 @@
                 <input type="number" on:input={(e) => updateContext(e)} name="5" value={pedalMapNumbers[5]}></div>
             <div>
                 <label style="width: 50px; display: inline-block"></label>
-                <select name="curves" bind:value={curves}>
-                    <option value=""></option>
+                <select name="curves" value={curves} on:input={(e) => updateMapNumbers(e)}>
+                    <option value="">custom curve</option>
                     <option value="linearMap">linear</option>
                     <option value="slowCurveMap">slow curve</option>
                     <option value="verySlowCurveMap">very slow curve</option>
