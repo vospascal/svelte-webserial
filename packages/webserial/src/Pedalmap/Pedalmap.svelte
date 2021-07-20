@@ -1,6 +1,7 @@
 <script>
     import {getContext, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
+    import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
@@ -133,7 +134,6 @@
     });
 
 
-
     pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
             if (type === "throttle") {
@@ -156,10 +156,10 @@
 </script>
 
 <div>
-    <div>
+    <div style="display: inline-block">
         <canvas height="300" width="300" bind:this={chartContainer}/>
     </div>
-    <!--    <div>-->
-    <!--        <VerticalProgress progress={progress} height="300"/>-->
-    <!--    </div>-->
+    <div style="display: inline-block">
+        <VerticalProgress progress={progress} height="300"/>
+    </div>
 </div>

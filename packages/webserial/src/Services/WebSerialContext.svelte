@@ -122,7 +122,6 @@
             await serialrxjs.disconnectHandler();
             connected.set(false);
         },
-        // stream: async () => await serialrxjs.stream(),
         write: async (msg) => await serialrxjs.writeHandler(msg),
     });
 
