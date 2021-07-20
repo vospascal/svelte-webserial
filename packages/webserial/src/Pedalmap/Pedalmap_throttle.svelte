@@ -2,7 +2,7 @@
     import {getContext, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
-    import {chartData, chartOption} from "./chartConfig";
+    import {chartData, chartOption} from "./chartConfig_throttle";
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
@@ -45,9 +45,18 @@
         if (JSON.stringify(value) !== '{}') {
             const {throttleMap} = value
             pedalMapNumbers = throttleMap;
-            chartInstance.update();
         }
     })
+
+    const handle = () => {
+        console.log(chartInstance)
+        if(chartInstance === null){
+            return
+        }
+        chartInstance.data.datasets[1].data = pedalMapNumbers;
+        chartInstance.update();
+    }
+    $: {pedalMapNumbers, handle()}
 
 
     let curves = "linearMap";
@@ -59,12 +68,11 @@
     const sCurveFastSlowMap = [0, 60, 75, 80, 85, 100];
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
 
-    $: console.log(pedalMapNumbers);
-
 </script>
 
 <div>
     <div style="display: inline-block">
+        <pre>{JSON.stringify(pedalMapNumbers)}</pre>
         <div style="display: inline-block">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
@@ -102,7 +110,7 @@
                 <label><input type="checkbox">inverted</label>
             </div>
         </div>
-        <canvas height="250" width="250" bind:this={chartContainer}/>
+        <canvas height="250" width="250" id="throttle" bind:this={chartContainer}/>
     </div>
     <div style="display: inline-block">
         <VerticalProgress progress={progress} height="250"/>

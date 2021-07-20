@@ -18,9 +18,9 @@
             <Maps/>
         </div>
         <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
-            <Pedalmap_clutch/>
             <Pedalmap_throttle/>
             <Pedalmap_brake/>
+            <Pedalmap_clutch/>
         </div>
         <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
             <Timeline/>
