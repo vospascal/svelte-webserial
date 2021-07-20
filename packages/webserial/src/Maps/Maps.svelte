@@ -7,6 +7,10 @@
     let smoothMap = getContext("WSC-smoothMap");
     let bitsMap = getContext("WSC-bitsMap");
 
+    pedalMap.subscribe(newValue => {
+        console.log(newValue)
+    })
+
 </script>
 <div>
     <pre>{JSON.stringify($pedalMap)}</pre>

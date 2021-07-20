@@ -1,5 +1,5 @@
 <script>
-    import {getContext, onMount} from 'svelte';
+    import {setContext, getContext, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
     import {chartData, chartOption} from "./chartConfig_clutch";
@@ -44,18 +44,47 @@
         if (JSON.stringify(value) !== '{}') {
             const {clutchMap} = value
             pedalMapNumbers = clutchMap;
+            chartInstance.data.datasets[1].data = clutchMap;
+            chartInstance.update();
+            curves = checkIfMatchCurveList(clutchMap);
         }
     })
 
-    const handle = () => {
-        console.log(chartInstance)
+    const updateContext = (e) => {
         if(chartInstance === null){
             return
         }
-        chartInstance.data.datasets[1].data = pedalMapNumbers;
-        chartInstance.update();
+        pedalMapNumbers[e.target.name] = parseInt(e.target.value)
+        pedalMap.update(existing => {
+            return {...existing, ...{ clutchMap: pedalMapNumbers} }
+        });
     }
-    $: {pedalMapNumbers, handle()}
+
+    const checkIfMatchCurveList = (clutchMap) => {
+        const curve = JSON.stringify(clutchMap)
+        if(curve === JSON.stringify(linearMap)){
+            return "linearMap";
+        }
+        if(curve === JSON.stringify(slowCurveMap)){
+            return "slowCurveMap";
+        }
+        if(curve === JSON.stringify(verySlowCurveMap)){
+            return "verySlowCurveMap";
+        }
+        if(curve === JSON.stringify(fastCurveMap)){
+            return "fastCurveMap";
+        }
+        if(curve === JSON.stringify(veryFastCurveMap)){
+            return "veryFastCurveMap";
+        }
+        if(curve === JSON.stringify(sCurveFastSlowMap)){
+            return "sCurveFastSlowMap";
+        }
+        if(curve === JSON.stringify(sCurveSlowFastMap)){
+            return "sCurveSlowFastMap";
+        }
+        return "linearMap";
+    }
 
     let curves = "linearMap";
     const linearMap = [0, 20, 40, 60, 80, 100];
@@ -70,26 +99,27 @@
 
 <div>
     <div style="display: inline-block">
+        clutch
         <pre>{JSON.stringify(pedalMapNumbers)}</pre>
         <div style="display: inline-block">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
-                <input type="number" bind:value={pedalMapNumbers[0]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="0" value={pedalMapNumbers[0]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">20%</label>
-                <input type="number" bind:value={pedalMapNumbers[1]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="1" value={pedalMapNumbers[1]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">40%</label>
-                <input type="number" bind:value={pedalMapNumbers[2]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="2" value={pedalMapNumbers[2]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">60%</label>
-                <input type="number" bind:value={pedalMapNumbers[3]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="3" value={pedalMapNumbers[3]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">80%</label>
-                <input type="number" bind:value={pedalMapNumbers[4]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="4" value={pedalMapNumbers[4]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">100%</label>
-                <input type="number" bind:value={pedalMapNumbers[5]}></div>
+                <input type="number" on:input={(e) => updateContext(e)} name="5" value={pedalMapNumbers[5]}></div>
             <div>
                 <label style="width: 50px; display: inline-block"></label>
                 <select name="curves" bind:value={curves}>
