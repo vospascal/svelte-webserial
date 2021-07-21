@@ -1,6 +1,6 @@
 <script>
     import {setContext, onMount, afterUpdate} from 'svelte';
-    import { writable } from 'svelte/store';
+    import {writable} from 'svelte/store';
 
     import WebSerialRxjs from "./WebSerialRxjs";
     import {interval, map, Subject} from "rxjs";
@@ -18,11 +18,22 @@
 
     let connected = writable(false);
     let pedalMap = writable({});
+    let pedalMapSerial = writable("")
+
     let calibrationMap = writable({});
+    let calibrationMapSerial = writable("")
+
     let invertedMap = writable({});
+    let invertedMapSerial = writable("")
+
     let smoothMap = writable({});
+    let smoothMapSerial = writable("")
+
     let bitsMap = writable({});
+    let bitsMapSerial = writable("")
+
     let message = new Subject();
+
 
     let getStream = null;
 
@@ -35,7 +46,7 @@
         let timeout = null
         let initialCall = true
 
-        return function() {
+        return function () {
             const callNow = immediate && initialCall
             const next = () => {
                 callback.apply(this, arguments)
@@ -68,7 +79,7 @@
                 .subscribe({
                     next: (msg) => {
                         //dont match normal input
-                        if(findMatch(msg)){
+                        if (findMatch(msg)) {
                             message.next(generalFilter(msg));
                             return
                         }
@@ -125,15 +136,61 @@
         write: async (msg) => await serialrxjs.writeHandler(msg),
     });
 
+
+    pedalMap.subscribe((value) => {
+        //TMAP:0-20-40-60-80-100,BMAP:0-60-75-80-85-100,CMAP:0-52-75-89-96-100
+        if (value && value.throttleMap && value.brakeMap && value.clutchMap) {
+            pedalMapSerial.set("TMAP:" + value.throttleMap.join("-") + "," + "BMAP:" + value.brakeMap.join("-") + "," + "CMAP:" + value.clutchMap.join("-"));
+        }
+    });
+
+    calibrationMap.subscribe((value) => {
+        //TCALI:73-466-75-1023,BCALI:73-391-75-1023,CCALI:74-474-75-1023
+        if (value && value.throttleCalibration && value.brakeCalibration && value.clutchCalibration) {
+            calibrationMapSerial.set("TCALI:" + value.throttleCalibration.join("-") + "," + "BCALI:" + value.brakeCalibration.join("-") + "," + "CCALI:" + value.clutchCalibration.join("-"));
+        }
+    });
+
+    invertedMap.subscribe((value) => {
+        //INVER:0-0-0
+        if (value && value.throttleInverted && value.brakeInverted && value.clutchInverted) {
+            invertedMapSerial.set("INVER:" + value.throttleInverted + "-" + value.brakeInverted + "-" + value.clutchInverted);
+        }
+    });
+
+    smoothMap.subscribe((value) => {
+        //SMOOTH:0-0-0
+        if (value && value.throttleSmooth && value.brakeSmooth && value.clutchSmooth) {
+            smoothMapSerial.set("SMOOTH:" + value.throttleSmooth + "-" + value.brakeSmooth + "-" + value.clutchSmooth);
+
+        }
+    });
+
+    bitsMap.subscribe((value) => {
+        //BITS:1023-1023-1023-1023-1023-1023
+        if (value && value.throttleBits && value.brakeBits && value.clutchBits) {
+            bitsMapSerial.set("BITS:" + value.throttleBits.join("-") + "-" + value.brakeBits.join("-") + "-" + value.clutchBits.join("-"));
+        }
+    });
+
     setContext("WSC-connected", connected);
+
     setContext("WSC-pedalMap", pedalMap);
+    setContext("WSC-pedalMapSerial", pedalMapSerial);
+
     setContext("WSC-calibrationMap", calibrationMap);
+    setContext("WSC-calibrationMapSerial", calibrationMapSerial);
+
     setContext("WSC-invertedMap", invertedMap);
+    setContext("WSC-invertedMapSerial", invertedMapSerial);
+
     setContext("WSC-smoothMap", smoothMap);
+    setContext("WSC-smoothMapSerial", smoothMapSerial);
+
     setContext("WSC-bitsMap", bitsMap);
+    setContext("WSC-bitsMapSerial", bitsMapSerial);
+
     setContext("WSC-message", message.pipe(sample(interval(30))));
-
-
 </script>
 
 <slot/>
