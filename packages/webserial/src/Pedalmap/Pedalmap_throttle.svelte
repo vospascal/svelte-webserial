@@ -162,22 +162,22 @@
         <div style="display: inline-block;">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="0" value={pedalMapNumbers[0]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="0" value={pedalMapNumbers[0]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">20%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="1" value={pedalMapNumbers[1]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="1" value={pedalMapNumbers[1]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">40%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="2" value={pedalMapNumbers[2]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="2" value={pedalMapNumbers[2]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">60%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="3" value={pedalMapNumbers[3]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="3" value={pedalMapNumbers[3]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">80%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="4" value={pedalMapNumbers[4]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="4" value={pedalMapNumbers[4]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">100%</label>
-                <input type="number" on:input={(e) => updateContext(e)} name="5" value={pedalMapNumbers[5]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="5" value={pedalMapNumbers[5]}></div>
             <div>
                 <label style="width: 50px; display: inline-block"></label>
                 <select name="curves" value={curves} on:input={(e) => updateMapNumbers(e)}>
