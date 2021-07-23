@@ -118,9 +118,10 @@
                 })
 
         }
-        if (!$connected && getStream) {
-            getStream.unsubscribe();
-        }
+        // if (!$connected && getStream) {
+        //     getStream.unsubscribe();
+        //     console.log(getStream)
+        // }
     });
 
     setContext("WSC-actions", {
