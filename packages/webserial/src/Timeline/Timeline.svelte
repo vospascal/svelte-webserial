@@ -1,5 +1,5 @@
 <script>
-    import {getContext, onMount} from 'svelte';
+    import {getContext, onDestroy, onMount} from 'svelte';
     import Chart from 'chart.js/auto';
 
     let message = getContext('WSC-message');
@@ -107,7 +107,7 @@
     }
 
 
-    message.subscribe({
+    const unsubscribeMessage = message.subscribe({
         next: (msg) => {
             adddata({
                 throttle: {
@@ -129,6 +129,11 @@
         },
     });
 
+    onDestroy(() => {
+        chartInstance.destroy();
+        chartInstance.stop();
+        unsubscribeMessage.unsubscribe()
+    })
 
 </script>
 

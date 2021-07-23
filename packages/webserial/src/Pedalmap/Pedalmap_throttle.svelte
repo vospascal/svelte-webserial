@@ -1,5 +1,5 @@
 <script>
-    import {getContext, onMount, setContext} from 'svelte';
+    import {getContext, onMount, onDestroy, setContext} from 'svelte';
     import Chart from 'chart.js/auto';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
     import {chartData, chartOption} from "./chartConfig_throttle";
@@ -26,6 +26,10 @@
     })
 
     function adddata(msg) {
+        if (chartInstance === null) {
+            return
+        }
+
         chartInstance.data.datasets[0].data[0] = {
             x: msg.throttle.after || 0,
             y: msg.throttle.before || 0,
@@ -35,7 +39,7 @@
         chartInstance.update();
     }
 
-    message.subscribe({
+    const unsubscribeMessage = message.subscribe({
         next: (msg) => {
             adddata(msg)
         },
@@ -44,20 +48,20 @@
         },
     });
 
-    smoothMap.subscribe((value) => {
+    const unsubscribeSmoothMap = smoothMap.subscribe((value) => {
         if (value) {
             smooth = value.throttleSmooth === "1"
         }
     })
 
-    invertedMap.subscribe((value) => {
+    const unsubscribeInvertedMap = invertedMap.subscribe((value) => {
         if (value) {
             inverted = value.throttleInverted === "1"
         }
     })
 
-    pedalMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}') {
+    const unsubscribePedalMap = pedalMap.subscribe((value) => {
+        if (JSON.stringify(value) !== '{}' && chartInstance !== null) {
             const {throttleMap} = value
             pedalMapNumbers = throttleMap;
             chartInstance.data.datasets[1].data = throttleMap;
@@ -154,6 +158,14 @@
     const sCurveFastSlowMap = [0, 60, 75, 80, 85, 100];
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
 
+    onDestroy(() => {
+        chartInstance.destroy();
+        chartInstance.stop();
+        unsubscribeMessage.unsubscribe()
+        // unsubscribePedalMap.unsubscribe()
+        // unsubscribeSmoothMap.unsubscribe()
+        // unsubscribeInvertedMap.unsubscribe()
+    })
 </script>
 
 <div>
@@ -162,22 +174,28 @@
         <div style="display: inline-block;">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="0" value={pedalMapNumbers[0]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="0"
+                       value={pedalMapNumbers[0]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">20%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="1" value={pedalMapNumbers[1]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="1"
+                       value={pedalMapNumbers[1]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">40%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="2" value={pedalMapNumbers[2]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="2"
+                       value={pedalMapNumbers[2]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">60%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="3" value={pedalMapNumbers[3]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="3"
+                       value={pedalMapNumbers[3]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">80%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="4" value={pedalMapNumbers[4]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="4"
+                       value={pedalMapNumbers[4]}></div>
             <div>
                 <label style="width: 50px; display: inline-block">100%</label>
-                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="5" value={pedalMapNumbers[5]}></div>
+                <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="5"
+                       value={pedalMapNumbers[5]}></div>
             <div>
                 <label style="width: 50px; display: inline-block"></label>
                 <select name="curves" value={curves} on:input={(e) => updateMapNumbers(e)}>
