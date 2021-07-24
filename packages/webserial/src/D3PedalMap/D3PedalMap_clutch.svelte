@@ -1,25 +1,23 @@
 <style>
-    svg {
-        font-family: Sans-Serif, Arial;
-    }
-    .line {
+
+    * :global(.line) {
         stroke-width: 2;
         fill: none;
     }
 
-    .axis path {
+    * :global(.axis path) {
         stroke: black;
     }
 
-    .text {
+    * :global(.text) {
         font-size: 12px;
     }
 
-    .title-text {
+    * :global(.title-text) {
         font-size: 12px;
     }
 
-    .grid line {
+    * :global(.grid line) {
         stroke: lightgrey;
         stroke-opacity: 0.7;
         shape-rendering: crispEdges;
@@ -29,7 +27,7 @@
 
 <script>
     import * as d3 from "d3";
-    import {getContext, onMount} from "svelte";
+    import {getContext, onDestroy, onMount} from "svelte";
 
     let message = getContext('WSC-message');
 
@@ -78,8 +76,7 @@
     var yScale = d3
         .scaleLinear()
         .domain([100, 0])
-        .range([0, width - margin]);
-
+        .range([0, height - margin]);
 
     const update = (msg) => {
         var oldData = d3.select(".container g").selectAll("circle").data();
@@ -191,7 +188,7 @@
      });
 
 
-    message.subscribe({
+    const unsubscribeMessage = message.subscribe({
         next: (msg) => {
             update(msg)
         },
@@ -199,6 +196,10 @@
             console.log("[readLoop] DONE");
         },
     });
+
+    onDestroy(() => {
+        unsubscribeMessage.unsubscribe()
+    })
 
 </script>
 

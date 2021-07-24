@@ -1,0 +1,156 @@
+<script>
+    import * as d3 from "d3";
+    import {getContext, onDestroy, onMount} from "svelte";
+    import "./BulletGraph"
+
+    let message = getContext('WSC-message');
+    let calibrationMap = getContext('WSC-calibrationMap');
+    let bitsMap = getContext('WSC-bitsMap');
+
+    /////////////////////////
+    var margin = {top: 5, right: 40, bottom: 30, left: 40},
+        width = 875 - margin.left - margin.right,
+        height = 75 - margin.top - margin.bottom;
+
+
+    var svg
+
+    var data = [
+        {
+            title: "0",
+            subtitle: "",
+            measures: [0, 1023],
+            markers: [0]
+        },
+    ];
+
+    onMount(() => {
+        var chart = d3.bullet().width(width).height(height).ticks(10);
+        svg = d3
+            .select("#bullet_chart_throttle_hid")
+            .selectAll("svg")
+            .data(data)
+            .enter()
+
+            .append("svg")
+            .attr("class", "bullet")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(chart);
+
+        var title = svg
+            .append("g")
+            .style("text-anchor", "end")
+            .attr("transform", "translate(-6," + height / 2 + ")");
+
+        title
+            .append("text")
+            .attr("class", "title")
+            .text(function (d) {
+                return d.title;
+            });
+
+        title
+            .append("text")
+            .attr("class", "subtitle")
+            .attr("dy", "1em")
+            .text(function (d) {
+                return d.subtitle;
+            });
+    });
+
+    const update = (msg) => {
+        // var measure = d3.select(".bullet g").selectAll(".measure").data();
+        // var markers = d3.select(".bullet g").selectAll(".marker").data();
+        // var data = d3.select(".bullet g").selectAll(".title").data();
+        if ($bitsMap && $bitsMap.throttleBits && $calibrationMap && $calibrationMap.throttleCalibration) {
+            var select = d3.select("#bullet_chart_throttle_hid .bullet g");
+
+            select.selectAll(".title").text(() => msg.throttle.hid)
+
+            const measures1 = (width / +$bitsMap.throttleBits[1]) * msg.throttle.hid
+            select.selectAll(".measure.s1").attr("width", measures1);
+        }
+    }
+
+
+    $: {
+        if ($bitsMap && $bitsMap.throttleBits && $calibrationMap && $calibrationMap.throttleCalibration) {
+            var select = d3.select("#bullet_chart_throttle_hid .bullet g");
+            const markers0 = (width / +$bitsMap.throttleBits[1]) * +$calibrationMap.throttleCalibration[0];
+            select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
+
+            const markers1 = (width / +$bitsMap.throttleBits[1]) * +$calibrationMap.throttleCalibration[1];
+            select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
+
+            const markers2 = (width / +$bitsMap.throttleBits[1]) * +$calibrationMap.throttleCalibration[2];
+            select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
+
+            const markers3 = (width / +$bitsMap.throttleBits[1]) * +$calibrationMap.throttleCalibration[3];
+            select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
+        }
+    }
+
+    const unsubscribeMessage = message.subscribe({
+        next: (msg) => {
+            update(msg)
+        },
+        complete: () => {
+            console.log("[readLoop] DONE");
+        },
+    });
+
+    onDestroy(() => {
+        unsubscribeMessage.unsubscribe()
+    })
+</script>
+<style>
+    * :global(.bullet .marker) {
+        stroke: #000;
+        stroke-width: 2px;
+    }
+
+    * :global(.bullet .tick line) {
+        stroke: #666;
+        stroke-width: 0.5px;
+    }
+
+    * :global(.bullet .measure.s0) {
+        fill: lightsteelblue;
+    }
+
+    * :global(.bullet .measure.s1) {
+        fill: steelblue;
+    }
+
+    * :global(.bullet .marker.s0) {
+        opacity: 0;
+    }
+
+    * :global(.bullet .marker.s1) {
+        opacity: 0;
+    }
+
+    * :global(.bullet .marker.s2) {
+        opacity: 0;
+    }
+
+    * :global(.bullet .marker.s3) {
+        opacity: 0;
+    }
+
+    * :global(.bullet .title) {
+        font-weight: bold;
+    }
+
+    * :global(.bullet .subtitle) {
+        fill: #999;
+    }
+</style>
+
+
+<div>
+    <div id="bullet_chart_throttle_hid"></div>
+</div>

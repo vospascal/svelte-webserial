@@ -8,8 +8,14 @@
     import Pedalmap_brake from "./Pedalmap/Pedalmap_brake.svelte";
     import Pedalmap_clutch from "./Pedalmap/Pedalmap_clutch.svelte";
     import Pedalmap_throttle from "./Pedalmap/Pedalmap_throttle.svelte";
-    import D3PedalMap_clutch from "./D3PedalMap/D3PedalMap_clutch.svelte";
     import {Tab, TabList, TabPanel, Tabs} from "./Tabs/tabs";
+
+    import D3BulletGraph_clutch_hid from "./D3BulletGraph/D3BulletGraph_clutch_hid.svelte";
+    import D3BulletGraph_clutch_raw from "./D3BulletGraph/D3BulletGraph_clutch_raw.svelte";
+    import D3BulletGraph_brake_hid from "./D3BulletGraph/D3BulletGraph_brake_hid.svelte";
+    import D3BulletGraph_brake_raw from "./D3BulletGraph/D3BulletGraph_brake_raw.svelte";
+    import D3BulletGraph_throttle_hid from "./D3BulletGraph/D3BulletGraph_throttle_hid.svelte";
+    import D3BulletGraph_throttle_raw from "./D3BulletGraph/D3BulletGraph_throttle_raw.svelte";
 </script>
 
 <div style="width: 860px; margin: 0 auto;">
@@ -28,6 +34,8 @@
             <TabPanel>
                 <h1>Pedals</h1>
                 <!--        <D3PedalMap_clutch />-->
+<!--                <D3PedalMap_clutch />-->
+
                 <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
                     <Pedalmap_throttle/>
                     <Pedalmap_brake/>
@@ -40,6 +48,14 @@
 
             <TabPanel>
                 <h1>Calibration</h1>
+                <D3BulletGraph_clutch_hid />
+                <D3BulletGraph_clutch_raw />
+                <hr>
+                <D3BulletGraph_brake_hid />
+                <D3BulletGraph_brake_raw />
+                <hr>
+                <D3BulletGraph_throttle_hid />
+                <D3BulletGraph_throttle_raw />
             </TabPanel>
 
             <TabPanel>
