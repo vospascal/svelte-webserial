@@ -1,8 +1,6 @@
 <script>
-    import {setContext, getContext, onMount, onDestroy} from 'svelte';
-    import Chart from 'chart.js/auto';
+    import {getContext, onDestroy} from 'svelte';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
-    import {chartData, chartOption} from "./chartConfig_brake";
     import D3PedalMap_brake from "../D3PedalMap/D3PedalMap_brake.svelte";
 
     let message = getContext('WSC-message');
@@ -26,13 +24,13 @@
         },
     });
 
-    const unsubscribeSmoothMap = smoothMap.subscribe((value) => {
+    smoothMap.subscribe((value) => {
         if (value) {
             smooth = value.brakeSmooth === "1"
         }
     })
 
-    const unsubscribeInvertedMap = invertedMap.subscribe((value) => {
+    invertedMap.subscribe((value) => {
         if (value) {
             inverted = value.brakeInverted === "1"
         }

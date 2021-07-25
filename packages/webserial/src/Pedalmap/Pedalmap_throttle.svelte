@@ -1,8 +1,6 @@
 <script>
-    import {getContext, onMount, onDestroy, setContext} from 'svelte';
-    import Chart from 'chart.js/auto';
+    import {getContext, onDestroy} from 'svelte';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
-    import {chartData, chartOption} from "./chartConfig_throttle";
     import D3PedalMap_throttle from "../D3PedalMap/D3PedalMap_throttle.svelte";
 
     let message = getContext('WSC-message');
@@ -26,13 +24,13 @@
         },
     });
 
-    const unsubscribeSmoothMap = smoothMap.subscribe((value) => {
+    smoothMap.subscribe((value) => {
         if (value) {
             smooth = value.throttleSmooth === "1"
         }
     })
 
-    const unsubscribeInvertedMap = invertedMap.subscribe((value) => {
+    invertedMap.subscribe((value) => {
         if (value) {
             inverted = value.throttleInverted === "1"
         }
