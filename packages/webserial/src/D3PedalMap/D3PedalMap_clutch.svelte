@@ -79,8 +79,6 @@
     });
 
     pedalMap.subscribe((value) => {
-        console.log(value)
-
         if (JSON.stringify(value) !== '{}') {
             const {clutchMap} = value
             pedalMapNumbers = clutchMap;

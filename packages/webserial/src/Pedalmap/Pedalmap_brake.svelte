@@ -13,35 +13,6 @@
     let smooth = false;
     let inverted = false;
 
-    const unsubscribeMessage = message.subscribe({
-        next: (msg) => {
-            progress = msg.brake.after || 0
-        },
-        complete: () => {
-            console.log("[readLoop] DONE");
-        },
-    });
-
-    smoothMap.subscribe((value) => {
-        if (value) {
-            smooth = value.brakeSmooth === "1"
-        }
-    })
-
-    invertedMap.subscribe((value) => {
-        if (value) {
-            inverted = value.brakeInverted === "1"
-        }
-    })
-
-    const unsubscribePedalMap = pedalMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}') {
-            const {brakeMap} = value
-            pedalMapNumbers = brakeMap;
-            curves = checkIfMatchCurveList(brakeMap);
-        }
-    })
-
     const updateContext = (e) => {
         pedalMapNumbers[e.target.name] = parseInt(e.target.value)
         pedalMap.update(existing => {
@@ -88,7 +59,6 @@
 
     const updateMapNumbers = (e) => {
         const selectedCurve = getMatchingCurve(e.target.value);
-        console.log(selectedCurve)
         pedalMap.update(existing => {
             return {...existing, ...{brakeMap: selectedCurve}}
         });
@@ -126,6 +96,35 @@
     const veryFastCurveMap = [0, 52, 75, 89, 96, 100];
     const sCurveFastSlowMap = [0, 60, 75, 80, 85, 100];
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
+
+    const unsubscribeMessage = message.subscribe({
+        next: (msg) => {
+            progress = msg.brake.after || 0
+        },
+        complete: () => {
+            console.log("[readLoop] DONE");
+        },
+    });
+
+    smoothMap.subscribe((value) => {
+        if (value) {
+            smooth = value.brakeSmooth === "1"
+        }
+    })
+
+    invertedMap.subscribe((value) => {
+        if (value) {
+            inverted = value.brakeInverted === "1"
+        }
+    })
+
+    pedalMap.subscribe((value) => {
+        if (JSON.stringify(value) !== '{}') {
+            const {brakeMap} = value
+            pedalMapNumbers = brakeMap;
+            curves = checkIfMatchCurveList(brakeMap);
+        }
+    })
 
     onDestroy(() => {
         unsubscribeMessage.unsubscribe()

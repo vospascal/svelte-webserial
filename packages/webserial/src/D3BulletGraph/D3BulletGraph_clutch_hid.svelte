@@ -75,24 +75,6 @@
         }
     }
 
-
-    $: {
-        if ($bitsMap && $bitsMap.clutchBits && $calibrationMap && $calibrationMap.clutchCalibration) {
-            var select = d3.select("#bullet_chart_clutch_hid .bullet g");
-            const markers0 = (width / +$bitsMap.clutchBits[1]) * +$calibrationMap.clutchCalibration[0];
-            select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
-
-            const markers1 = (width / +$bitsMap.clutchBits[1]) * +$calibrationMap.clutchCalibration[1];
-            select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
-
-            const markers2 = (width / +$bitsMap.clutchBits[1]) * +$calibrationMap.clutchCalibration[2];
-            select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
-
-            const markers3 = (width / +$bitsMap.clutchBits[1]) * +$calibrationMap.clutchCalibration[3];
-            select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
-        }
-    }
-
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {
             update(msg)

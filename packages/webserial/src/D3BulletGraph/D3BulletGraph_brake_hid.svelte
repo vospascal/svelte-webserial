@@ -62,34 +62,13 @@
     });
 
     const update = (msg) => {
-        // var measure = d3.select(".bullet g").selectAll(".measure").data();
-        // var markers = d3.select(".bullet g").selectAll(".marker").data();
-        // var data = d3.select(".bullet g").selectAll(".title").data();
-        if ($bitsMap && $bitsMap.brakeBits && $calibrationMap && $calibrationMap.brakeCalibration) {
+        if ($bitsMap && $bitsMap.brakeBits) {
             var select = d3.select("#bullet_chart_brake_hid .bullet g");
 
             select.selectAll(".title").text(() => msg.brake.hid)
 
             const measures1 = (width / +$bitsMap.brakeBits[1]) * msg.brake.hid
             select.selectAll(".measure.s1").attr("width", measures1);
-        }
-    }
-
-
-    $: {
-        if ($bitsMap && $bitsMap.brakeBits && $calibrationMap && $calibrationMap.brakeCalibration) {
-            var select = d3.select("#bullet_chart_brake_hid .bullet g");
-            const markers0 = (width / +$bitsMap.brakeBits[1]) * +$calibrationMap.brakeCalibration[0];
-            select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
-
-            const markers1 = (width / +$bitsMap.brakeBits[1]) * +$calibrationMap.brakeCalibration[1];
-            select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
-
-            const markers2 = (width / +$bitsMap.brakeBits[1]) * +$calibrationMap.brakeCalibration[2];
-            select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
-
-            const markers3 = (width / +$bitsMap.brakeBits[1]) * +$calibrationMap.brakeCalibration[3];
-            select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
         }
     }
 

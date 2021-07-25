@@ -8,48 +8,12 @@
     let invertedMap = getContext("WSC-invertedMap");
     let smoothMap = getContext("WSC-smoothMap");
 
-    let chartContainer = null; //ref
-    let chartInstance = null;
     let progress = 0;
     let pedalMapNumbers = [0, 20, 40, 60, 80, 100]
     let smooth = false;
     let inverted = false;
 
-    const unsubscribeMessage = message.subscribe({
-        next: (msg) => {
-            progress = msg.clutch.after || 0
-        },
-        complete: () => {
-            console.log("[readLoop] DONE");
-        },
-    });
-
-    smoothMap.subscribe((value) => {
-        if (value) {
-            smooth = value.clutchSmooth === "1"
-        }
-    })
-
-    invertedMap.subscribe((value) => {
-        if (value) {
-            inverted = value.clutchInverted === "1"
-        }
-    })
-
-    const unsubscribePedalMap = pedalMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}' && chartInstance !== null) {
-            const {clutchMap} = value
-            pedalMapNumbers = clutchMap;
-            chartInstance.data.datasets[1].data = clutchMap;
-            chartInstance.update();
-            curves = checkIfMatchCurveList(clutchMap);
-        }
-    })
-
     const updateContext = (e) => {
-        if (chartInstance === null) {
-            return
-        }
         pedalMapNumbers[e.target.name] = parseInt(e.target.value)
         pedalMap.update(existing => {
             return {...existing, ...{clutchMap: pedalMapNumbers}}
@@ -95,7 +59,6 @@
 
     const updateMapNumbers = (e) => {
         const selectedCurve = getMatchingCurve(e.target.value);
-        console.log(selectedCurve)
         pedalMap.update(existing => {
             return {...existing, ...{clutchMap: selectedCurve}}
         });
@@ -133,6 +96,35 @@
     const veryFastCurveMap = [0, 52, 75, 89, 96, 100];
     const sCurveFastSlowMap = [0, 60, 75, 80, 85, 100];
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
+
+    const unsubscribeMessage = message.subscribe({
+        next: (msg) => {
+            progress = msg.clutch.after || 0
+        },
+        complete: () => {
+            console.log("[readLoop] DONE");
+        },
+    });
+
+    smoothMap.subscribe((value) => {
+        if (value) {
+            smooth = value.clutchSmooth === "1"
+        }
+    })
+
+    invertedMap.subscribe((value) => {
+        if (value) {
+            inverted = value.clutchInverted === "1"
+        }
+    })
+
+    pedalMap.subscribe((value) => {
+        if (JSON.stringify(value) !== '{}') {
+            const {clutchMap} = value
+            pedalMapNumbers = clutchMap;
+            curves = checkIfMatchCurveList(clutchMap);
+        }
+    })
 
     onDestroy(() => {
         unsubscribeMessage.unsubscribe()
