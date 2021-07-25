@@ -7,6 +7,9 @@
     let calibrationMap = getContext('WSC-calibrationMap');
     let bitsMap = getContext('WSC-bitsMap');
 
+    let calibrationMapNumbers = null
+    let bitsMapNumbers = null
+
     /////////////////////////
     var margin = {top: 5, right: 40, bottom: 30, left: 40},
         width = 875 - margin.left - margin.right,
@@ -59,38 +62,46 @@
             .text(function (d) {
                 return d.subtitle;
             });
+
+        updateMarkers();
     });
 
     const update = (msg) => {
-        // var measure = d3.select(".bullet g").selectAll(".measure").data();
-        // var markers = d3.select(".bullet g").selectAll(".marker").data();
-        if ($bitsMap && $bitsMap.brakeBits && $calibrationMap && $calibrationMap.brakeCalibration) {
+        if (bitsMapNumbers.brakeBits && calibrationMapNumbers.brakeCalibration) {
             var select = d3.select("#bullet_chart_brake_raw .bullet g");
-
             select.selectAll(".title").text(() => msg.brake.raw)
-
-            const measures1 = (width / +$bitsMap.brakeBits[0]) * msg.brake.raw
+            const measures1 = (width / +bitsMapNumbers.brakeBits[0]) * msg.brake.raw
             select.selectAll(".measure.s1").attr("width", measures1);
         }
     }
 
-
-    $: {
-        if ($bitsMap && $bitsMap.brakeBits && $calibrationMap && $calibrationMap.brakeCalibration) {
+    const updateMarkers = () => {
+        if (bitsMapNumbers.brakeBits && calibrationMapNumbers.brakeCalibration) {
             var select = d3.select("#bullet_chart_brake_raw .bullet g");
-            const markers0 = (width / +$bitsMap.brakeBits[0]) * +$calibrationMap.brakeCalibration[0];
+            const markers0 = (width / +bitsMapNumbers.brakeBits[0]) * +calibrationMapNumbers.brakeCalibration[0];
             select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
 
-            const markers1 = (width / +$bitsMap.brakeBits[0]) * +$calibrationMap.brakeCalibration[1];
+            const markers1 = (width / +bitsMapNumbers.brakeBits[0]) * +calibrationMapNumbers.brakeCalibration[1];
             select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
 
-            const markers2 = (width / +$bitsMap.brakeBits[0]) * +$calibrationMap.brakeCalibration[2];
+            const markers2 = (width / +bitsMapNumbers.brakeBits[0]) * +calibrationMapNumbers.brakeCalibration[2];
             select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
 
-            const markers3 = (width / +$bitsMap.brakeBits[0]) * +$calibrationMap.brakeCalibration[3];
+            const markers3 = (width / +bitsMapNumbers.brakeBits[0]) * +calibrationMapNumbers.brakeCalibration[3];
             select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
         }
     }
+
+    //reactive to subscriptions
+    $: bitsMapNumbers, calibrationMapNumbers, updateMarkers()
+
+    const unsubscribeCalibrationMap = calibrationMap.subscribe((value) => {
+        calibrationMapNumbers = value
+    })
+
+    const unsubscribeBitsMap = bitsMap.subscribe((value) => {
+        bitsMapNumbers =  value
+    })
 
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {

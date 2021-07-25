@@ -7,6 +7,9 @@
     let calibrationMap = getContext('WSC-calibrationMap');
     let bitsMap = getContext('WSC-bitsMap');
 
+    let calibrationMapNumbers = null
+    let bitsMapNumbers = null
+
     /////////////////////////
     var margin = {top: 5, right: 40, bottom: 30, left: 40},
         width = 875 - margin.left - margin.right,
@@ -59,49 +62,46 @@
             .text(function (d) {
                 return d.subtitle;
             });
+
+        updateMarkers();
     });
 
     const update = (msg) => {
-        // var measure = d3.select(".bullet g").selectAll(".measure").data();
-        // var markers = d3.select(".bullet g").selectAll(".marker").data();
-        if ($bitsMap && $bitsMap.clutchBits && $calibrationMap && $calibrationMap.clutchCalibration) {
+        if (bitsMapNumbers.clutchBits && calibrationMapNumbers.clutchCalibration) {
             var select = d3.select("#bullet_chart_clutch_raw .bullet g");
-
             select.selectAll(".title").text(() => msg.clutch.raw)
-
-            const measures1 = (width / +$bitsMap.clutchBits[0]) * msg.clutch.raw
+            const measures1 = (width / +bitsMapNumbers.clutchBits[0]) * msg.clutch.raw
             select.selectAll(".measure.s1").attr("width", measures1);
         }
     }
 
-    const caliMapPoints = () => {
-        if ($bitsMap && $bitsMap.clutchBits && $calibrationMap && $calibrationMap.clutchCalibration) {
+    const updateMarkers = () => {
+        if (bitsMapNumbers.clutchBits && calibrationMapNumbers.clutchCalibration) {
             var select = d3.select("#bullet_chart_clutch_raw .bullet g");
-            const markers0 = (width / +$bitsMap.clutchBits[0]) * +$calibrationMap.clutchCalibration[0];
+            const markers0 = (width / +bitsMapNumbers.clutchBits[0]) * +calibrationMapNumbers.clutchCalibration[0];
             select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
 
-            const markers1 = (width / +$bitsMap.clutchBits[0]) * +$calibrationMap.clutchCalibration[1];
+            const markers1 = (width / +bitsMapNumbers.clutchBits[0]) * +calibrationMapNumbers.clutchCalibration[1];
             select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
 
-            const markers2 = (width / +$bitsMap.clutchBits[0]) * +$calibrationMap.clutchCalibration[2];
+            const markers2 = (width / +bitsMapNumbers.clutchBits[0]) * +calibrationMapNumbers.clutchCalibration[2];
             select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
 
-            const markers3 = (width / +$bitsMap.clutchBits[0]) * +$calibrationMap.clutchCalibration[3];
+            const markers3 = (width / +bitsMapNumbers.clutchBits[0]) * +calibrationMapNumbers.clutchCalibration[3];
             select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
         }
     }
 
-    bitsMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}') {
-            console.log(value, 'bitsMap.subscribe')
-        }
-    });
+    //reactive to subscriptions
+    $: bitsMapNumbers, calibrationMapNumbers, updateMarkers()
 
-    calibrationMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}') {
-            console.log(value, 'calibrationMap.subscribe')
-        }
-    });
+    const unsubscribeCalibrationMap = calibrationMap.subscribe((value) => {
+        calibrationMapNumbers = value
+    })
+
+    const unsubscribeBitsMap = bitsMap.subscribe((value) => {
+        bitsMapNumbers =  value
+    })
 
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {
