@@ -8,8 +8,6 @@
     let invertedMap = getContext("WSC-invertedMap");
     let smoothMap = getContext("WSC-smoothMap");
 
-    let chartContainer = null; //ref
-    let chartInstance = null;
     let progress = 0;
     let pedalMapNumbers = [0, 20, 40, 60, 80, 100]
     let smooth = false;
@@ -37,19 +35,14 @@
     })
 
     const unsubscribePedalMap = pedalMap.subscribe((value) => {
-        if (JSON.stringify(value) !== '{}' && chartInstance !== null) {
+        if (JSON.stringify(value) !== '{}') {
             const {brakeMap} = value
             pedalMapNumbers = brakeMap;
-            chartInstance.data.datasets[1].data = brakeMap;
-            chartInstance.update();
             curves = checkIfMatchCurveList(brakeMap);
         }
     })
 
     const updateContext = (e) => {
-        if (chartInstance === null) {
-            return
-        }
         pedalMapNumbers[e.target.name] = parseInt(e.target.value)
         pedalMap.update(existing => {
             return {...existing, ...{brakeMap: pedalMapNumbers}}

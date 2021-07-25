@@ -37,9 +37,9 @@
             <TabPanel>
                 <h1>Pedals</h1>
                 <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
-                    <Pedalmap_throttle/>
-                    <Pedalmap_brake/>
                     <Pedalmap_clutch/>
+                    <Pedalmap_brake/>
+                    <Pedalmap_throttle/>
                 </div>
                 <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
                     <Timeline/>
@@ -71,7 +71,7 @@
                 <p/>
                 <p>
                     You can find executable and arduino code in the following locations <br>
-                    Gui executable : <a href="https://github.com/vospascal/pedal-gui">pedal-gui</a> <br>
+                    Gui executable: <a href="https://github.com/vospascal/pedal-gui">pedal-gui</a> <br>
                     Arduino code that works with the gui exe file: <a
                         href="https://github.com/vospascal/pedal-arduino/">pedal-arduino</a> <br>
                 <p/>
