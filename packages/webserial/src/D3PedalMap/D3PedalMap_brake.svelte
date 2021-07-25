@@ -81,10 +81,10 @@
         .range([0, height - margin]);
 
     const update = (msg) => {
-        var select = d3.select("#clutchChart")
+        var select = d3.select("#brakeChart")
 
-        const cx_circle_s0 = (width - margin) / 100 * msg.clutch.after;
-        const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * msg.clutch.before);
+        const cx_circle_s0 = (width - margin) / 100 * msg.brake.after;
+        const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * msg.brake.before);
         select.selectAll(".input .circle.s0 circle").attr("cx", cx_circle_s0).attr("cy", cy_circle_s0)
     }
 
@@ -93,7 +93,7 @@
     onMount(() => {
         var color = d3.scaleOrdinal(d3.schemeCategory10);
         svg = d3
-            .select("#clutchChart")
+            .select("#brakeChart")
             .append("svg")
             .attr("class", "container")
             .attr("width", width + margin + "px")
@@ -196,9 +196,9 @@
 
     pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
-            const {clutchMap} = value
-            pedalMapNumbers = clutchMap;
-            var select = d3.select("#clutchChart")
+            const {brakeMap} = value
+            pedalMapNumbers = brakeMap;
+            var select = d3.select("#brakeChart")
 
             const cx_circle_s0 = (width - margin) / 100 * 0;
             const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[0]);
@@ -243,5 +243,5 @@
 </script>
 
 <div>
-    <div id="clutchChart"></div>
+    <div id="brakeChart"></div>
 </div>

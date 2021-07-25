@@ -159,8 +159,8 @@
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
 
     onDestroy(() => {
-        chartInstance.destroy();
-        chartInstance.stop();
+        // chartInstance.destroy();
+        // chartInstance.stop();
         unsubscribeMessage.unsubscribe()
         // unsubscribePedalMap.unsubscribe()
         // unsubscribeSmoothMap.unsubscribe()

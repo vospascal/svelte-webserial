@@ -16,10 +16,13 @@
     import D3BulletGraph_brake_raw from "./D3BulletGraph/D3BulletGraph_brake_raw.svelte";
     import D3BulletGraph_throttle_hid from "./D3BulletGraph/D3BulletGraph_throttle_hid.svelte";
     import D3BulletGraph_throttle_raw from "./D3BulletGraph/D3BulletGraph_throttle_raw.svelte";
+    import D3PedalMap_clutch from "./D3PedalMap/D3PedalMap_clutch.svelte";
+    import D3PedalMap_throttle from "./D3PedalMap/D3PedalMap_throttle.svelte";
+    import D3PedalMap_brake from "./D3PedalMap/D3PedalMap_brake.svelte";
 </script>
 
 <div style="width: 860px; margin: 0 auto;">
-    <WebSerialContext >
+    <WebSerialContext>
         <div style="padding: 0 10px;">
             <Buttons/>
         </div>
@@ -33,8 +36,11 @@
 
             <TabPanel>
                 <h1>Pedals</h1>
-                <!--        <D3PedalMap_clutch />-->
-<!--                <D3PedalMap_clutch />-->
+                <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
+                    <D3PedalMap_throttle/>
+                    <D3PedalMap_brake/>
+                    <D3PedalMap_clutch/>
+                </div>
 
                 <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
                     <Pedalmap_throttle/>
@@ -48,14 +54,14 @@
 
             <TabPanel>
                 <h1>Calibration</h1>
-                <D3BulletGraph_clutch_hid />
-                <D3BulletGraph_clutch_raw />
+                <D3BulletGraph_clutch_hid/>
+                <D3BulletGraph_clutch_raw/>
                 <hr>
-                <D3BulletGraph_brake_hid />
-                <D3BulletGraph_brake_raw />
+                <D3BulletGraph_brake_hid/>
+                <D3BulletGraph_brake_raw/>
                 <hr>
-                <D3BulletGraph_throttle_hid />
-                <D3BulletGraph_throttle_raw />
+                <D3BulletGraph_throttle_hid/>
+                <D3BulletGraph_throttle_raw/>
             </TabPanel>
 
             <TabPanel>
@@ -65,19 +71,21 @@
             </TabPanel>
 
             <TabPanel>
-               <p>
-                   Thank you for using this open source solution for diy pedals. <br>
-                   This is not to be sold its open and free for everyone to use. <br>
+                <p>
+                    Thank you for using this open source solution for diy pedals. <br>
+                    This is not to be sold its open and free for everyone to use. <br>
                 <p/>
                 <p>
-                   You can find executable and arduino code in the following locations <br>
-                   Gui executable : <a href="https://github.com/vospascal/pedal-gui">pedal-gui</a>  <br>
-                   Arduino code that works with the gui exe file: <a href="https://github.com/vospascal/pedal-arduino/">pedal-arduino</a>  <br>
+                    You can find executable and arduino code in the following locations <br>
+                    Gui executable : <a href="https://github.com/vospascal/pedal-gui">pedal-gui</a> <br>
+                    Arduino code that works with the gui exe file: <a
+                        href="https://github.com/vospascal/pedal-arduino/">pedal-arduino</a> <br>
                 <p/>
                 <p>
-                   If you like it please consider a donation to further development. <br>
-                   <a href="paypal.com/donate/?business=TBPE6XCB2XBMW&item_name=pedalbox&currency_code=EUR">donate on paypal</a>
-               </p>
+                    If you like it please consider a donation to further development. <br>
+                    <a href="paypal.com/donate/?business=TBPE6XCB2XBMW&item_name=pedalbox&currency_code=EUR">donate on
+                        paypal</a>
+                </p>
             </TabPanel>
         </Tabs>
 
