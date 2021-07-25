@@ -1,3 +1,47 @@
+<style>
+    * :global(.bullet .marker) {
+        stroke: #000;
+        stroke-width: 2px;
+    }
+
+    * :global(.bullet .tick line) {
+        stroke: #666;
+        stroke-width: 0.5px;
+    }
+
+    * :global(.bullet .measure.s0) {
+        fill: lightsteelblue;
+    }
+
+    * :global(.bullet .measure.s1) {
+        fill: steelblue;
+    }
+
+    * :global(.bullet .marker.s0) {
+        stroke: blue;
+    }
+
+    * :global(.bullet .marker.s1) {
+        stroke: red;
+    }
+
+    * :global(.bullet .marker.s2) {
+        stroke: green;
+    }
+
+    * :global(.bullet .marker.s3) {
+        stroke: orange;
+    }
+
+    * :global(.bullet .title) {
+        font-weight: bold;
+    }
+
+    * :global(.bullet .subtitle) {
+        fill: #999;
+    }
+</style>
+
 <script>
     import * as d3 from "d3";
     import {getContext, onDestroy, onMount} from "svelte";
@@ -67,40 +111,49 @@
     });
 
     const update = (msg) => {
-        if (bitsMapNumbers.throttleBits && calibrationMapNumbers.throttleCalibration) {
+        if (bitsMapNumbers && calibrationMapNumbers) {
             var select = d3.select("#bullet_chart_throttle_raw .bullet g");
             select.selectAll(".title").text(() => msg.throttle.raw)
-            const measures1 = (width / +bitsMapNumbers.throttleBits[0]) * msg.throttle.raw
+            const measures1 = (width / +bitsMapNumbers[0]) * msg.throttle.raw
             select.selectAll(".measure.s1").attr("width", measures1);
         }
     }
 
     const updateGraph = () => {
-        if (bitsMapNumbers.throttleBits && calibrationMapNumbers.throttleCalibration) {
+        if (bitsMapNumbers && calibrationMapNumbers) {
             var select = d3.select("#bullet_chart_throttle_raw .bullet g");
-            const markers0 = (width / +bitsMapNumbers.throttleBits[0]) * +calibrationMapNumbers.throttleCalibration[0];
+            const markers0 = (width / +bitsMapNumbers[0]) * +calibrationMapNumbers[0];
             select.selectAll(".marker.s0").attr("x1", markers0).attr("x2", markers0)
 
-            const markers1 = (width / +bitsMapNumbers.throttleBits[0]) * +calibrationMapNumbers.throttleCalibration[1];
+            const markers1 = (width / +bitsMapNumbers[0]) * +calibrationMapNumbers[1];
             select.selectAll(".marker.s1").attr("x1", markers1).attr("x2", markers1)
 
-            const markers2 = (width / +bitsMapNumbers.throttleBits[0]) * +calibrationMapNumbers.throttleCalibration[2];
+            const markers2 = (width / +bitsMapNumbers[0]) * +calibrationMapNumbers[2];
             select.selectAll(".marker.s2").attr("x1", markers2).attr("x2", markers2)
 
-            const markers3 = (width / +bitsMapNumbers.throttleBits[0]) * +calibrationMapNumbers.throttleCalibration[3];
+            const markers3 = (width / +bitsMapNumbers[0]) * +calibrationMapNumbers[3];
             select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
         }
+    }
+
+    const updateContext = (e) => {
+        calibrationMapNumbers[e.target.name] = parseInt(e.target.value)
+        calibrationMap.update(existing => {
+            return {...existing, ...{throttleCalibration: calibrationMapNumbers}}
+        });
     }
 
     //reactive to subscriptions
     $: bitsMapNumbers, calibrationMapNumbers, updateGraph()
 
-    const unsubscribeCalibrationMap = calibrationMap.subscribe((value) => {
-        calibrationMapNumbers = value
+    calibrationMap.subscribe((value) => {
+        const {throttleCalibration} = value
+        calibrationMapNumbers = throttleCalibration
     })
 
-    const unsubscribeBitsMap = bitsMap.subscribe((value) => {
-        bitsMapNumbers =  value
+    bitsMap.subscribe((value) => {
+        const {throttleBits} = value
+        bitsMapNumbers = throttleBits
     })
 
     const unsubscribeMessage = message.subscribe({
@@ -116,51 +169,14 @@
         unsubscribeMessage.unsubscribe()
     })
 </script>
-<style>
-    * :global(.bullet .marker) {
-        stroke: #000;
-        stroke-width: 2px;
-    }
-
-    * :global(.bullet .tick line) {
-        stroke: #666;
-        stroke-width: 0.5px;
-    }
-
-    * :global(.bullet .measure.s0) {
-        fill: lightsteelblue;
-    }
-
-    * :global(.bullet .measure.s1) {
-        fill: steelblue;
-    }
-
-    * :global(.bullet .marker.s0) {
-        stroke: blue;
-    }
-
-    * :global(.bullet .marker.s1) {
-        stroke: red;
-    }
-
-    * :global(.bullet .marker.s2) {
-        stroke: green;
-    }
-
-    * :global(.bullet .marker.s3) {
-        stroke: orange;
-    }
-
-    * :global(.bullet .title) {
-        font-weight: bold;
-    }
-
-    * :global(.bullet .subtitle) {
-        fill: #999;
-    }
-</style>
 
 
 <div>
     <div id="bullet_chart_throttle_raw"></div>
+    <div style="padding: 0px 25px 0px 35px">
+        <input min="0" max="1023" type="number" on:input={(e) => updateContext(e)} name="2"
+               value={calibrationMapNumbers[2]} style="float: left">
+        <input min="0" max="1023" type="number" on:input={(e) => updateContext(e)} name="3"
+               value={calibrationMapNumbers[3]} style="float: right">
+    </div>
 </div>

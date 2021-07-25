@@ -32,6 +32,7 @@
         pedalMap = value;
     });
     calibrationMapSerial.subscribe((value) => {
+        console.log(value)
         calibrationMap = value;
     });
     invertedMapSerial.subscribe((value) => {
@@ -48,9 +49,7 @@
         write(pedalMap.split(",")[0]); //tmap
         write(pedalMap.split(",")[1]); //bmap
         write(pedalMap.split(",")[2]); //cmap
-        write(calibrationMap.split(",")[0]); //tcali
-        write(calibrationMap.split(",")[1]); //bcali
-        write(calibrationMap.split(",")[2]); //ccali
+        write(calibrationMap) //tcali + bcali + ccali
         write(invertedMap);
         write(smoothMap);
         write(bitsMap);

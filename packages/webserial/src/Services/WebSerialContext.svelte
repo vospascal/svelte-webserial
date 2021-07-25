@@ -147,6 +147,7 @@
 
     calibrationMap.subscribe((value) => {
         //TCALI:73-466-75-1023,BCALI:73-391-75-1023,CCALI:74-474-75-1023
+        console.log(value)
         if (value && value.throttleCalibration && value.brakeCalibration && value.clutchCalibration) {
             calibrationMapSerial.set("TCALI:" + value.throttleCalibration.join("-") + "," + "BCALI:" + value.brakeCalibration.join("-") + "," + "CCALI:" + value.clutchCalibration.join("-"));
         }
