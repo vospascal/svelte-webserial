@@ -3,6 +3,7 @@
     import Chart from 'chart.js/auto';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
     import {chartData, chartOption} from "./chartConfig_brake";
+    import D3PedalMap_brake from "../D3PedalMap/D3PedalMap_brake.svelte";
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
@@ -16,32 +17,9 @@
     let smooth = false;
     let inverted = false;
 
-    onMount(() => {
-        const newChartInstance = new Chart(chartContainer.getContext('2d'), {
-            type: 'line',
-            data: chartData,
-            options: chartOption
-        });
-        chartInstance = newChartInstance;
-    })
-
-    function adddata(msg) {
-        if (chartInstance === null) {
-            return
-        }
-
-        chartInstance.data.datasets[0].data[0] = {
-            x: msg.brake.after || 0,
-            y: msg.brake.before || 0,
-            r: 3 //ticks size
-        }
-        progress = msg.brake.after || 0
-        chartInstance.update();
-    }
-
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {
-            adddata(msg)
+            progress = msg.brake.after || 0
         },
         complete: () => {
             console.log("[readLoop] DONE");
@@ -159,12 +137,7 @@
     const sCurveSlowFastMap = [0, 31, 46, 54, 69, 100];
 
     onDestroy(() => {
-        // chartInstance.destroy();
-        // chartInstance.stop();
         unsubscribeMessage.unsubscribe()
-        // unsubscribePedalMap.unsubscribe()
-        // unsubscribeSmoothMap.unsubscribe()
-        // unsubscribeInvertedMap.unsubscribe()
     })
 </script>
 
@@ -214,7 +187,7 @@
                 <label><input type="checkbox" on:input={(e) =>updateInverted(e)} checked={inverted}>inverted</label>
             </div>
         </div>
-        <canvas height="250" width="250" id="brake" bind:this={chartContainer}/>
+        <D3PedalMap_brake/>
     </div>
     <div style="display: inline-block; vertical-align: top;">
         <VerticalProgress progress={progress} height="470"/>

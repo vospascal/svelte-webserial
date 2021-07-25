@@ -50,10 +50,10 @@
             name: "curve",
             values: [
                 {increment: 0, position: 0},
-                {increment: 20, position: 31},
-                {increment: 40, position: 46},
-                {increment: 60, position: 54},
-                {increment: 80, position: 69},
+                {increment: 20, position: 20},
+                {increment: 40, position: 40},
+                {increment: 60, position: 60},
+                {increment: 80, position: 80},
                 {increment: 100, position: 100}
             ]
         },
@@ -62,9 +62,9 @@
             values: [{increment: 0, position: 0}]
         }
     ];
-    var width = 250;
-    var height = 250;
-    var margin = 35;
+    var width = 230;
+    var height = 230;
+    var margin = 20;
     var lineOpacity = "0.25";
     var circleOpacity = "0.85";
     var circleRadius = 3;

@@ -74,8 +74,7 @@
         }
     }
 
-
-    $: {
+    const caliMapPoints = () => {
         if ($bitsMap && $bitsMap.clutchBits && $calibrationMap && $calibrationMap.clutchCalibration) {
             var select = d3.select("#bullet_chart_clutch_raw .bullet g");
             const markers0 = (width / +$bitsMap.clutchBits[0]) * +$calibrationMap.clutchCalibration[0];
@@ -91,6 +90,18 @@
             select.selectAll(".marker.s3").attr("x1", markers3).attr("x2", markers3)
         }
     }
+
+    bitsMap.subscribe((value) => {
+        if (JSON.stringify(value) !== '{}') {
+            console.log(value, 'bitsMap.subscribe')
+        }
+    });
+
+    calibrationMap.subscribe((value) => {
+        if (JSON.stringify(value) !== '{}') {
+            console.log(value, 'calibrationMap.subscribe')
+        }
+    });
 
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {

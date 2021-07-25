@@ -37,12 +37,6 @@
             <TabPanel>
                 <h1>Pedals</h1>
                 <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
-                    <D3PedalMap_throttle/>
-                    <D3PedalMap_brake/>
-                    <D3PedalMap_clutch/>
-                </div>
-
-                <div style="display: flex; flex-wrap:  wrap; justify-content: center; align-items: stretch;">
                     <Pedalmap_throttle/>
                     <Pedalmap_brake/>
                     <Pedalmap_clutch/>
