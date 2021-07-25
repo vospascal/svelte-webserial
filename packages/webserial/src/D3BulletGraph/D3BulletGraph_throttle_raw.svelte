@@ -63,7 +63,7 @@
                 return d.subtitle;
             });
 
-        updateMarkers();
+        updateGraph();
     });
 
     const update = (msg) => {
@@ -75,7 +75,7 @@
         }
     }
 
-    const updateMarkers = () => {
+    const updateGraph = () => {
         if (bitsMapNumbers.throttleBits && calibrationMapNumbers.throttleCalibration) {
             var select = d3.select("#bullet_chart_throttle_raw .bullet g");
             const markers0 = (width / +bitsMapNumbers.throttleBits[0]) * +calibrationMapNumbers.throttleCalibration[0];
@@ -93,7 +93,7 @@
     }
 
     //reactive to subscriptions
-    $: bitsMapNumbers, calibrationMapNumbers, updateMarkers()
+    $: bitsMapNumbers, calibrationMapNumbers, updateGraph()
 
     const unsubscribeCalibrationMap = calibrationMap.subscribe((value) => {
         calibrationMapNumbers = value

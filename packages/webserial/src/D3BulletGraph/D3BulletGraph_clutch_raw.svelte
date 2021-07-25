@@ -63,7 +63,7 @@
                 return d.subtitle;
             });
 
-        updateMarkers();
+        updateGraph();
     });
 
     const update = (msg) => {
@@ -75,7 +75,7 @@
         }
     }
 
-    const updateMarkers = () => {
+    const updateGraph = () => {
         if (bitsMapNumbers.clutchBits && calibrationMapNumbers.clutchCalibration) {
             var select = d3.select("#bullet_chart_clutch_raw .bullet g");
             const markers0 = (width / +bitsMapNumbers.clutchBits[0]) * +calibrationMapNumbers.clutchCalibration[0];
@@ -93,7 +93,7 @@
     }
 
     //reactive to subscriptions
-    $: bitsMapNumbers, calibrationMapNumbers, updateMarkers()
+    $: bitsMapNumbers, calibrationMapNumbers, updateGraph()
 
     const unsubscribeCalibrationMap = calibrationMap.subscribe((value) => {
         calibrationMapNumbers = value

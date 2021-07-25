@@ -182,8 +182,48 @@
             .call(xAxis);
 
         svg.append("g").attr("class", "y axis").call(yAxis);
+
+        updateGraph();
     });
 
+
+    const updateGraph = () => {
+        var select = d3.select("#brakeChart")
+
+        const cx_circle_s0 = (width - margin) / 100 * 0;
+        const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[0]);
+
+        const cx_circle_s1 = (width - margin) / 100 * 20;
+        const cy_circle_s1 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[1]);
+
+        const cx_circle_s2 = (width - margin) / 100 * 40;
+        const cy_circle_s2 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[2]);
+
+        const cx_circle_s3 = (width - margin) / 100 * 60;
+        const cy_circle_s3 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[3]);
+
+        const cx_circle_s4 = (width - margin) / 100 * 80;
+        const cy_circle_s4 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[4]);
+
+        const cx_circle_s5 = (width - margin) / 100 * 100;
+        const cy_circle_s5 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[5]);
+
+        const line = "M" +
+            cx_circle_s0 + "," + cy_circle_s0 + "L" +
+            cx_circle_s1 + "," + cy_circle_s1 + "L" +
+            cx_circle_s2 + "," + cy_circle_s2 + "L" +
+            cx_circle_s3 + "," + cy_circle_s3 + "L" +
+            cx_circle_s4 + "," + cy_circle_s4 + "L" +
+            cx_circle_s5 + "," + cy_circle_s5
+
+        select.selectAll(".line-group.curve .line").attr("d", line)
+        select.selectAll(".curve .circle.s0 circle").attr("cx", cx_circle_s0).attr("cy", cy_circle_s0)
+        select.selectAll(".curve .circle.s1 circle").attr("cx", cx_circle_s1).attr("cy", cy_circle_s1)
+        select.selectAll(".curve .circle.s2 circle").attr("cx", cx_circle_s2).attr("cy", cy_circle_s2)
+        select.selectAll(".curve .circle.s3 circle").attr("cx", cx_circle_s3).attr("cy", cy_circle_s3)
+        select.selectAll(".curve .circle.s4 circle").attr("cx", cx_circle_s4).attr("cy", cy_circle_s4)
+        select.selectAll(".curve .circle.s5 circle").attr("cx", cx_circle_s5).attr("cy", cy_circle_s5)
+    }
 
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {
@@ -198,42 +238,7 @@
         if (JSON.stringify(value) !== '{}') {
             const {brakeMap} = value
             pedalMapNumbers = brakeMap;
-            var select = d3.select("#brakeChart")
-
-            const cx_circle_s0 = (width - margin) / 100 * 0;
-            const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[0]);
-
-            const cx_circle_s1 = (width - margin) / 100 * 20;
-            const cy_circle_s1 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[1]);
-
-            const cx_circle_s2 = (width - margin) / 100 * 40;
-            const cy_circle_s2 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[2]);
-
-            const cx_circle_s3 = (width - margin) / 100 * 60;
-            const cy_circle_s3 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[3]);
-
-            const cx_circle_s4 = (width - margin) / 100 * 80;
-            const cy_circle_s4 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[4]);
-
-            const cx_circle_s5 = (width - margin) / 100 * 100;
-            const cy_circle_s5 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[5]);
-
-            const line = "M" +
-                cx_circle_s0 + "," + cy_circle_s0 + "L" +
-                cx_circle_s1 + "," + cy_circle_s1 + "L" +
-                cx_circle_s2 + "," + cy_circle_s2 + "L" +
-                cx_circle_s3 + "," + cy_circle_s3 + "L" +
-                cx_circle_s4 + "," + cy_circle_s4 + "L" +
-                cx_circle_s5 + "," + cy_circle_s5
-
-            select.selectAll(".line-group.curve .line").attr("d", line)
-            select.selectAll(".curve .circle.s0 circle").attr("cx", cx_circle_s0).attr("cy", cy_circle_s0)
-            select.selectAll(".curve .circle.s1 circle").attr("cx", cx_circle_s1).attr("cy", cy_circle_s1)
-            select.selectAll(".curve .circle.s2 circle").attr("cx", cx_circle_s2).attr("cy", cy_circle_s2)
-            select.selectAll(".curve .circle.s3 circle").attr("cx", cx_circle_s3).attr("cy", cy_circle_s3)
-            select.selectAll(".curve .circle.s4 circle").attr("cx", cx_circle_s4).attr("cy", cy_circle_s4)
-            select.selectAll(".curve .circle.s5 circle").attr("cx", cx_circle_s5).attr("cy", cy_circle_s5)
-
+            updateGraph();
         }
     })
 
