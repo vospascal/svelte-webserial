@@ -24,6 +24,6 @@
     }
 </style>
 
-<button class:selected="{$selectedTab === tab}" on:click="{() => selectTab(tab)}">
+<button class:selected="{$selectedTab === tab}" on:click="{() => selectTab(tab)}" style="padding:10px;">
     <slot></slot>
 </button>

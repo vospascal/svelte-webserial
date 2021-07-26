@@ -56,6 +56,8 @@
     }
 </script>
 
-<button disabled={$connected} on:click={handleConnect}>connect</button>
-<button disabled={!$connected} on:click={handleDisconnect}>disconnect</button>
-<button on:click={saveToArduino}>save to arduino</button>
+<div style="padding: 10px;">
+    <button disabled={$connected} on:click={handleConnect}>connect</button>
+    <button disabled={!$connected} on:click={handleDisconnect}>disconnect</button>
+    <button disabled={!$connected} on:click={saveToArduino}>save to arduino</button>
+</div>

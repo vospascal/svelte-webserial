@@ -173,10 +173,11 @@
 
 <div>
     <div id="bullet_chart_throttle_raw"></div>
-    <div style="padding: 0px 25px 0px 35px">
+    <div style="padding: 0px 25px 0px 35px; display: flex; justify-content: space-between;">
         <input min="0" max="1023" type="number" on:input={(e) => updateContext(e)} name="2"
-               value={calibrationMapNumbers[2]} style="float: left">
+               value={calibrationMapNumbers[2]} style="text-align: left">
+        <button>click</button>
         <input min="0" max="1023" type="number" on:input={(e) => updateContext(e)} name="3"
-               value={calibrationMapNumbers[3]} style="float: right">
+               value={calibrationMapNumbers[3]} style="text-align: right">
     </div>
 </div>
