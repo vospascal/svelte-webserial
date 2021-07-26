@@ -47,7 +47,12 @@
 <div class="overlay">
     <div class="overlay--content--container">
         <div class="overlay--content--box" style="justify-content: space-around;">
-            <slot/>
+            <h3 style="text-align: center;">
+                Your arduino is not conected! <br><br>
+                Please connect to your arduino,<br>
+                When connected this message wil disappear.<br> <br>
+                Drive save and have fun!
+            </h3>
         </div>
     </div>
 </div>

@@ -64,7 +64,7 @@
     ];
     var width = 230;
     var height = 230;
-    var margin = 20;
+    var margin = 25;
     var lineOpacity = "0.25";
     var circleOpacity = "0.85";
     var circleRadius = 3;
@@ -81,10 +81,10 @@
         .range([0, height - margin]);
 
     const update = (msg) => {
-        var select = d3.select("#clutchChart")
+        var select = d3.select("#throttleChart")
 
-        const cx_circle_s0 = (width - margin) / 100 * msg.clutch.after;
-        const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * msg.clutch.before);
+        const cx_circle_s0 = (width - margin) / 100 * msg.throttle.after;
+        const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * msg.throttle.before);
         select.selectAll(".input .circle.s0 circle").attr("cx", cx_circle_s0).attr("cy", cy_circle_s0)
     }
 
@@ -93,7 +93,7 @@
     onMount(() => {
         var color = d3.scaleOrdinal(d3.schemeCategory10);
         svg = d3
-            .select("#clutchChart")
+            .select("#throttleChart")
             .append("svg")
             .attr("class", "container")
             .attr("width", width + margin + "px")
@@ -188,7 +188,7 @@
 
 
     const updateGraph = () => {
-        var select = d3.select("#clutchChart")
+        var select = d3.select("#throttleChart")
 
         const cx_circle_s0 = (width - margin) / 100 * 0;
         const cy_circle_s0 = (width - margin) - ((height - margin) / 100 * pedalMapNumbers[0]);
@@ -236,8 +236,8 @@
 
     pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
-            const {clutchMap} = value
-            pedalMapNumbers = clutchMap;
+            const {throttleMap} = value
+            pedalMapNumbers = throttleMap;
             updateGraph();
         }
     })
@@ -248,5 +248,5 @@
 </script>
 
 <div>
-    <div id="clutchChart"></div>
+    <div id="throttleChart"></div>
 </div>

@@ -133,7 +133,9 @@
 
 <div>
     <div style="display: inline-block;  vertical-align: top;">
-        <div>throttle</div>
+        <div>
+            <strong>throttle</strong>
+        </div>
         <div style="display: inline-block;">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>

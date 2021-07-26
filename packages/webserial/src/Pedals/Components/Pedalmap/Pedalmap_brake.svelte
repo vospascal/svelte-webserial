@@ -1,7 +1,7 @@
 <script>
     import {getContext, onDestroy} from 'svelte';
     import VerticalProgress from "../VerticalProgress/VerticalProgress.svelte";
-    import D3PedalMap_clutch from "../D3PedalMap/D3PedalMap_clutch.svelte";
+    import D3PedalMap_brake from "../D3PedalMap/D3PedalMap_brake.svelte";
 
     let message = getContext('WSC-message');
     let pedalMap = getContext("WSC-pedalMap");
@@ -16,12 +16,12 @@
     const updateContext = (e) => {
         pedalMapNumbers[e.target.name] = parseInt(e.target.value)
         pedalMap.update(existing => {
-            return {...existing, ...{clutchMap: pedalMapNumbers}}
+            return {...existing, ...{brakeMap: pedalMapNumbers}}
         });
     }
 
-    const checkIfMatchCurveList = (clutchMap) => {
-        const curve = JSON.stringify(clutchMap)
+    const checkIfMatchCurveList = (brakeMap) => {
+        const curve = JSON.stringify(brakeMap)
         if (curve === JSON.stringify(linearMap)) {
             return "linearMap";
         }
@@ -48,19 +48,19 @@
 
     const updateSmooth = (e) => {
         smoothMap.update(existing => {
-            return {...existing, ...{clutchSmooth: e.target.checked ? "1" : "0"}}
+            return {...existing, ...{brakeSmooth: e.target.checked ? "1" : "0"}}
         });
     }
     const updateInverted = (e) => {
         invertedMap.update(existing => {
-            return {...existing, ...{clutchInverted: e.target.checked ? "1" : "0"}}
+            return {...existing, ...{brakeInverted: e.target.checked ? "1" : "0"}}
         });
     }
 
     const updateMapNumbers = (e) => {
         const selectedCurve = getMatchingCurve(e.target.value);
         pedalMap.update(existing => {
-            return {...existing, ...{clutchMap: selectedCurve}}
+            return {...existing, ...{brakeMap: selectedCurve}}
         });
     }
     const getMatchingCurve = (selectedValue) => {
@@ -99,7 +99,7 @@
 
     const unsubscribeMessage = message.subscribe({
         next: (msg) => {
-            progress = msg.clutch.after || 0
+            progress = msg.brake.after || 0
         },
         complete: () => {
             console.log("[readLoop] DONE");
@@ -108,21 +108,21 @@
 
     smoothMap.subscribe((value) => {
         if (value) {
-            smooth = value.clutchSmooth === "1"
+            smooth = value.brakeSmooth === "1"
         }
     })
 
     invertedMap.subscribe((value) => {
         if (value) {
-            inverted = value.clutchInverted === "1"
+            inverted = value.brakeInverted === "1"
         }
     })
 
     pedalMap.subscribe((value) => {
         if (JSON.stringify(value) !== '{}') {
-            const {clutchMap} = value
-            pedalMapNumbers = clutchMap;
-            curves = checkIfMatchCurveList(clutchMap);
+            const {brakeMap} = value
+            pedalMapNumbers = brakeMap;
+            curves = checkIfMatchCurveList(brakeMap);
         }
     })
 
@@ -133,8 +133,10 @@
 
 <div>
     <div style="display: inline-block;  vertical-align: top;">
-        <div>clutch</div>
-        <div style="display: inline-block">
+        <div>
+            <strong>brake</strong>
+        </div>
+        <div style="display: inline-block;">
             <div>
                 <label style="width: 50px; display: inline-block">0%</label>
                 <input min="0" max="100" type="number" on:input={(e) => updateContext(e)} name="0"
@@ -177,7 +179,7 @@
                 <label><input type="checkbox" on:input={(e) =>updateInverted(e)} checked={inverted}>inverted</label>
             </div>
         </div>
-        <D3PedalMap_clutch/>
+        <D3PedalMap_brake/>
     </div>
     <div style="display: inline-block; vertical-align: top;">
         <VerticalProgress progress={progress} height="470"/>
