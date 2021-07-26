@@ -1,5 +1,5 @@
 <style>
-    :global(.overlay) {
+    :global(.calibrationoverlay) {
         position: absolute;
         top: 0;
         left: 0;
@@ -12,7 +12,7 @@
         z-index: 999;
     }
 
-    .overlay--content--container {
+    .calibrationoverlay--content--container {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -21,30 +21,25 @@
         height: 100%;
         pointer-events: none;
     }
-    .overlay--content--box {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 0;
-        flex-shrink: 0;
-        box-sizing: border-box;
+    .calibrationoverlay--content--box {
+
         max-width: 100%;
         max-height: 100%;
         pointer-events: auto;
         overflow-y: auto;
         background: #fff;
-        min-width: 400px;
+        min-width: 760px;
     }
 </style>
 
 <script>
-    import {getContext} from "svelte";
-    let connected = getContext('WSC-connected');
+    export let show;
 </script>
 
-{#if !$connected}
-<div class="overlay">
-    <div class="overlay--content--container">
-        <div class="overlay--content--box" style="justify-content: space-around;">
+{#if show}
+<div class="calibrationoverlay">
+    <div class="calibrationoverlay--content--container">
+        <div class="calibrationoverlay--content--box" >
             <slot />
         </div>
     </div>

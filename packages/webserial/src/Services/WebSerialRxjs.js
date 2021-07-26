@@ -34,7 +34,6 @@ class WebSerialRxjs {
     }
 
     connect = async () => {
-        console.log('123')
         // ESP32 vendorId and productId
         // const filter = { usbVendorId: 0x10c4, usbProductId: 0xea60 };
         this.port = await navigator.serial.requestPort({
