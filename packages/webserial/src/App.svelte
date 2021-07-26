@@ -25,7 +25,7 @@
 
                     When <u>connected</u> this message will disappear. <br> <br>
 
-                    Drive save and have fun! <br><br>
+                    Drive safe and have fun! <br><br>
 
                     The arduino code is found <a href="https://github.com/vospascal/pedal-arduino/">here</a>
                 </p>
