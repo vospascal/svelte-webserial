@@ -18,7 +18,9 @@ module.exports = {
     },
 
     output: {
+        // publicPath: "https://vospascal.github.io/pedal-gui-web/",
         publicPath: "/",
+
     },
 
     resolve: {
