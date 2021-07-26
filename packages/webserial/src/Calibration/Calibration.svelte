@@ -14,6 +14,9 @@
 
     let {connect, disconnect, write} = getContext('WSC-actions');
 
+    const oldCalibration = () => {
+        write("GetCali"); //get calibrarion values
+    }
     const resetCalibration = () => {
         write("CALIRESET"); //reset calibrarion values
         write("GetCali"); //get reset calibrarion values
@@ -36,6 +39,7 @@
     <D3BulletGraph_throttle_raw/>
 </Calibration_throttle>
 <div style="text-align: center; padding: 10px; margin-top: 20px; background: #eeeeee;">
+    <button on:click={oldCalibration}>old calibration</button>
     <button on:click={resetCalibration}>reset calibration</button>
     <SaveToArduino/>
 </div>

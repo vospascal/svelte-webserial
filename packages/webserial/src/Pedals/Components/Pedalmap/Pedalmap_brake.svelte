@@ -65,27 +65,26 @@
     }
     const getMatchingCurve = (selectedValue) => {
         if (selectedValue === "linearMap") {
-            return linearMap;
+            return linearMap.concat();
         }
         if (selectedValue === "slowCurveMap") {
-            return slowCurveMap;
+            return slowCurveMap.concat();
         }
         if (selectedValue === "verySlowCurveMap") {
-            return verySlowCurveMap;
+            return verySlowCurveMap.concat();
         }
         if (selectedValue === "fastCurveMap") {
-            return fastCurveMap;
+            return fastCurveMap.concat();
         }
         if (selectedValue === "veryFastCurveMap") {
-            return veryFastCurveMap;
+            return veryFastCurveMap.concat();
         }
         if (selectedValue === "sCurveFastSlowMap") {
-            return sCurveFastSlowMap;
+            return sCurveFastSlowMap.concat();
         }
         if (selectedValue === "sCurveSlowFastMap") {
-            return sCurveSlowFastMap;
+            return sCurveSlowFastMap.concat();
         }
-        return linearMap;
     }
 
     let curves = "linearMap";
